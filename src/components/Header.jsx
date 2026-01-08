@@ -118,7 +118,7 @@ const Header = () => {
               </Button>
             <Link to="/login" className="text-gray-500 hover:text-primary transition-colors flex items-center space-x-1">
               <User size={20} />
-              <span className="text-sm font-medium">Ingresar</span>
+              <span className="text-sm font-medium">Iniciar Sesión</span>
             </Link>
           </div>
 

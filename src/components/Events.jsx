@@ -1,16 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { Calendar, Clock, MapPin } from 'lucide-react';
 import CalendarBg from '../assets/RUGIDOdeFE.webp';
 
-const events = [
-  { id: 1, title: 'Servicio Dominical', date: '2026-01-11', time: '10:00 AM', location: 'Sede CdMx y Metepec', quarter: 1, type: 'Recurrente' },
+// Función para generar domingos del año
+const getSundays = (year) => {
+  const sundays = [];
+  const date = new Date(year, 0, 1);
+  while (date.getDay() !== 0) {
+    date.setDate(date.getDate() + 1);
+  }
+  while (date.getFullYear() === year) {
+    sundays.push(new Date(date));
+    date.setDate(date.getDate() + 7);
+  }
+  return sundays;
+};
+
+// Generar eventos recurrentes para 2026
+const recurrentEvents = getSundays(2026).flatMap((date, index) => {
+  const dateString = date.toISOString().split('T')[0];
+  const quarter = Math.floor((date.getMonth() + 3) / 3);
+  
+  return [
+    {
+      id: `sun-mtp-${index}`,
+      title: 'Servicio Dominical Metepec',
+      date: dateString,
+      time: '10:00 AM',
+      location: 'Sede Metepec',
+      quarter: quarter,
+      type: 'Recurrente'
+    },
+    {
+      id: `sun-cdmx-${index}`,
+      title: 'Servicio Dominical CdMx',
+      date: dateString,
+      time: '05:00 PM',
+      location: 'Sede CdMx',
+      quarter: quarter,
+      type: 'Recurrente'
+    }
+  ];
+});
+
+const specialEvents = [
   { id: 2, title: 'Noche de Adoración', date: '2026-01-24', time: '07:00 PM', location: 'Sede CdMx', quarter: 1, type: 'Especial' },
   { id: 3, title: 'Retiro de Jóvenes', date: '2026-02-14', time: 'All Day', location: 'Centro de Retiros', quarter: 1, type: 'Campamento' },
   { id: 4, title: 'Conferencia de Matrimonios', date: '2026-03-20', time: '06:00 PM', location: 'Hotel Radisson', quarter: 1, type: 'Conferencia' },
   { id: 5, title: 'Día de la Familia', date: '2026-04-15', time: '11:00 AM', location: 'Parque Bicentenario', quarter: 2, type: 'Comunidad' },
   { id: 6, title: 'Cena de Acción de Gracias', date: '2026-11-26', time: '08:00 PM', location: 'Sede Metepec', quarter: 4, type: 'Celebración' },
 ];
+
+const events = [...recurrentEvents, ...specialEvents].sort((a, b) => new Date(a.date) - new Date(b.date));
 
 const filters = [
   { value: 'all', label: 'Todo el año' },

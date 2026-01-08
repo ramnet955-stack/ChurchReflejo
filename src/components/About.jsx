@@ -150,13 +150,26 @@ const About = () => {
                    <div className="relative overflow-hidden rounded-xl mb-4 aspect-square max-w-sm mx-auto">
                      <img src={YoshimarImg} alt="Pastor Yoshimar Mora" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
                    </div>
-                   <h3 className="text-xl font-bold text-gray-900">Pastor CdMx</h3>
+                   <h3 className="text-xl font-bold text-gray-900">Pastor</h3>
                    <p className="text-primary font-medium">Yoshimar Mora</p>
                    <p className="text-sm text-gray-500 mt-2 px-4">Apasionado por la enseñanza expositiva de las Escrituras y el cuidado de las almas.</p>
                 </div>
+                
                 <div className="text-center group">
                    <div className="relative overflow-hidden rounded-xl mb-4 aspect-square max-w-sm mx-auto">
-                      <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Pastora" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+                      <div className="w-full h-full bg-slate-200 flex items-center justify-center text-slate-400">
+                        {/* Placeholder for Esteban if no image */}
+                        <span className="text-4xl">E</span> 
+                      </div>
+                   </div>
+                   <h3 className="text-xl font-bold text-gray-900">Co-pastor</h3>
+                   <p className="text-primary font-medium">Esteban</p>
+                   <p className="text-sm text-gray-500 mt-2 px-4">Sirviendo con fidelidad en el pastoreo y la enseñanza.</p>
+                </div>
+
+                <div className="text-center group">
+                   <div className="relative overflow-hidden rounded-xl mb-4 aspect-square max-w-sm mx-auto">
+                      <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Directora" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
                    </div>
                    <h3 className="text-xl font-bold text-gray-900">Director de Ministerios</h3>
                    <p className="text-primary font-medium">Julio</p>

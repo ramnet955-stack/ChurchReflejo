@@ -20,8 +20,8 @@ const Footer = () => {
             </div>
             <div className="flex gap-3">
                <a href="https://www.facebook.com/iglesiabiblicareflejo" className="w-8 h-8 rounded-full bg-slate-800/50 flex items-center justify-center hover:bg-secondary hover:text-white transition-all border border-slate-700/50" target="_blank" rel="noopener noreferrer"><Facebook size={14} /></a>
-               <a href="#" className="w-8 h-8 rounded-full bg-slate-800/50 flex items-center justify-center hover:bg-secondary hover:text-white transition-all border border-slate-700/50"><Instagram size={14} /></a>
-               <a href="#" className="w-8 h-8 rounded-full bg-slate-800/50 flex items-center justify-center hover:bg-secondary hover:text-white transition-all border border-slate-700/50"><Youtube size={14} /></a>
+               <a href="https://www.instagram.com/iglesiabiblicareflejo" className="w-8 h-8 rounded-full bg-slate-800/50 flex items-center justify-center hover:bg-secondary hover:text-white transition-all border border-slate-700/50" target="_blank" rel="noopener noreferrer"><Instagram size={14} /></a>
+               <a href="https://m.youtube.com/@iglesiabiblicareflejo" className="w-8 h-8 rounded-full bg-slate-800/50 flex items-center justify-center hover:bg-secondary hover:text-white transition-all border border-slate-700/50" target="_blank" rel="noopener noreferrer"><Youtube size={14} /></a>
             </div>
           </div>
 

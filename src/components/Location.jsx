@@ -16,7 +16,7 @@ const Location = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-start">
            {/* Section A: Maps */}
            <div className="space-y-8">
-              {/* Google Maps Embed */}
+              {/* Google Maps Embed CdMx */}
               <div className="bg-gray-200 rounded-xl h-64 md:h-80 w-full overflow-hidden shadow-inner relative flex items-center justify-center">
                  <iframe 
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.0577731466396!2d-99.12489448965722!3d19.453075781754904!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1f940bfe5dad9%3A0x21056947a6c295a8!2sSal%C3%B3n%20Dubai!5e0!3m2!1ses!2smx!4v1767814803930!5m2!1ses!2smx" 
@@ -26,8 +26,24 @@ const Location = () => {
                     allowFullScreen="" 
                     loading="lazy" 
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="Ubicación Iglesia"
+                    title="Ubicación Sede CdMx"
                  ></iframe>
+                 <div className="absolute top-2 left-2 bg-white/90 px-2 py-1 rounded text-xs font-bold shadow">CdMx</div>
+              </div>
+
+               {/* Google Maps Embed Metepec */}
+               <div className="bg-gray-200 rounded-xl h-64 md:h-80 w-full overflow-hidden shadow-inner relative flex items-center justify-center">
+                 <iframe 
+                    src="https://maps.google.com/maps?q=Calle+Leona+Vicario+456,+Metepec,+Estado+de+Mexico&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                    width="100%" 
+                    height="100%" 
+                    style={{ border: 0 }} 
+                    allowFullScreen="" 
+                    loading="lazy" 
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Ubicación Sede Metepec"
+                 ></iframe>
+                 <div className="absolute top-2 left-2 bg-white/90 px-2 py-1 rounded text-xs font-bold shadow">Metepec</div>
               </div>
 
               {/* Expansion Map Graphic */}
@@ -69,16 +85,22 @@ const Location = () => {
                        <Clock size={18} className="text-secondary mt-0.5" />
                        <div>
                           <p className="font-bold text-gray-800 text-sm">Domingos</p>
-                          <p className="text-gray-600 text-sm">11:00 AM - Reunión General</p>
+                          <p className="text-gray-600 text-sm">05:00 PM - Reunión General</p>
                        </div>
                     </div>
                     <div className="flex items-start gap-3">
                        <Users size={18} className="text-secondary mt-0.5" />
-                       <div>
-                          <p className="font-bold text-gray-800 text-sm">Miércoles</p>
-                          <p className="text-gray-600 text-xs">07:00 PM - Varones</p>
-                          <p className="text-gray-600 text-xs">07:00 PM - Mujeres</p>
-                          <p className="text-gray-600 text-xs">07:00 PM - Gen R</p>
+                       <div className="space-y-1">
+                          <div>
+                             <p className="font-bold text-gray-800 text-sm">Martes</p>
+                             <p className="text-gray-600 text-xs">09:30 PM - Gen R (Vía Zoom)</p>
+                          </div>
+                          <div>
+                             <p className="font-bold text-gray-800 text-sm">Viernes</p>
+                             <p className="text-gray-600 text-xs"><span className="font-semibold">1er Viernes:</span> Oración 07:00 PM</p>
+                             <p className="text-gray-600 text-xs"><span className="font-semibold">Resto:</span> Mujeres 07:00 PM</p>
+                             <p className="text-gray-600 text-xs pl-8">Discipulado 08:00 PM</p>
+                          </div>
                        </div>
                     </div>
                  </div>
