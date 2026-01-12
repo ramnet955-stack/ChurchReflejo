@@ -92,8 +92,8 @@ const Location = () => {
                        <Users size={18} className="text-secondary mt-0.5" />
                        <div className="space-y-1">
                           <div>
-                             <p className="font-bold text-gray-800 text-sm">Martes</p>
-                             <p className="text-gray-600 text-xs">09:30 PM - Gen R (Vía Zoom)</p>
+                             <p className="font-bold text-gray-800 text-sm">Miércoles</p>
+                             <p className="text-gray-600 text-xs">07:00 PM - Gen R (Vía Zoom)</p>
                           </div>
                           <div>
                              <p className="font-bold text-gray-800 text-sm">Viernes</p>

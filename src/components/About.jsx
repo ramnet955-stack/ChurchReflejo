@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Tabs, Tab, Box, Typography } from '@mui/material';
+import { Tabs, Tab, Box } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import YoshimarImg from '../assets/yoshimar.webp';
+import EstebanImg from '../assets/esteban.webp';
+import JulioImg from '../assets/julio.webp';
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -73,7 +75,8 @@ const About = () => {
               <Tab label="Visión / Misión" className="font-sans font-bold" />
               <Tab label="En esto creemos" className="font-sans font-bold" />
               <Tab label="Nuestra Historia" className="font-sans font-bold" />
-              <Tab label="Nuestros Pastores" className="font-sans font-bold" />
+              <Tab label="Nuestro Pastor" className="font-sans font-bold" />
+              <Tab label="Nuestros Líderes" className="font-sans font-bold" />
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
@@ -145,35 +148,44 @@ const About = () => {
              </div>
           </TabPanel>
           <TabPanel value={value} index={3}>
+             <div className="flex justify-center">
+                <div className="text-center group max-w-sm">
+                   <div className="relative overflow-hidden rounded-xl mb-4 aspect-square">
+                     <img src={YoshimarImg} alt="Pastor Yoshhimar Mora" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+                   </div>
+                   <h3 className="text-xl font-bold text-gray-900">Pastor</h3>
+                   <p className="text-primary font-medium">Yoshhimar Mora (CDMX y Metepec)</p>
+                   <p className="text-sm text-gray-500 mt-2 px-4">Apasionado por la enseñanza expositiva de las Escrituras y el cuidado de las almas.</p>
+                </div>
+             </div>
+          </TabPanel>
+          <TabPanel value={value} index={4}>
              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div className="text-center group">
                    <div className="relative overflow-hidden rounded-xl mb-4 aspect-square max-w-sm mx-auto">
-                     <img src={YoshimarImg} alt="Pastor Yoshimar Mora" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+                      <img src={JulioImg} alt="Líder Julio" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
                    </div>
-                   <h3 className="text-xl font-bold text-gray-900">Pastor</h3>
-                   <p className="text-primary font-medium">Yoshimar Mora</p>
-                   <p className="text-sm text-gray-500 mt-2 px-4">Apasionado por la enseñanza expositiva de las Escrituras y el cuidado de las almas.</p>
+                   <h3 className="text-xl font-bold text-gray-900">Director de Ministerios</h3>
+                   <p className="text-primary font-medium">Julio (CDMX)</p>
+                   <p className="text-sm text-gray-500 mt-2 px-4">Coordinando los esfuerzos para que cada miembro encuentre su lugar de servicio.</p>
                 </div>
-                
+
                 <div className="text-center group">
                    <div className="relative overflow-hidden rounded-xl mb-4 aspect-square max-w-sm mx-auto">
-                      <div className="w-full h-full bg-slate-200 flex items-center justify-center text-slate-400">
-                        {/* Placeholder for Esteban if no image */}
-                        <span className="text-4xl">E</span> 
-                      </div>
+                      <img src={EstebanImg} alt="Líder Esteban" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
                    </div>
                    <h3 className="text-xl font-bold text-gray-900">Co-pastor</h3>
-                   <p className="text-primary font-medium">Esteban</p>
+                   <p className="text-primary font-medium">Esteban (CDMX y Metepec)</p>
                    <p className="text-sm text-gray-500 mt-2 px-4">Sirviendo con fidelidad en el pastoreo y la enseñanza.</p>
                 </div>
 
                 <div className="text-center group">
                    <div className="relative overflow-hidden rounded-xl mb-4 aspect-square max-w-sm mx-auto">
-                      <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Directora" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+                     <img src={YoshimarImg} alt="Líder Yoshhimar" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
                    </div>
-                   <h3 className="text-xl font-bold text-gray-900">Director de Ministerios</h3>
-                   <p className="text-primary font-medium">Julio</p>
-                   <p className="text-sm text-gray-500 mt-2 px-4">Coordinando los esfuerzos para que cada miembro encuentre su lugar de servicio.</p>
+                   <h3 className="text-xl font-bold text-gray-900">Pastor</h3>
+                   <p className="text-primary font-medium">Yoshhimar Mora (CDMX y Metepec)</p>
+                   <p className="text-sm text-gray-500 mt-2 px-4">Liderando con visión y amor a la congregación.</p>
                 </div>
              </div>
           </TabPanel>

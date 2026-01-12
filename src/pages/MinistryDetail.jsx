@@ -57,12 +57,36 @@ const ministriesData = {
         schedule: 'Domingos 2:00 PM',
         leader: 'Equipo Misión R',
         icon: Sparkles
+    },
+    ninos: {
+        id: 'ninos',
+        title: 'Rebañito',
+        subtitle: 'Sembrando la semilla de la fe',
+        color: 'from-amber-400 to-orange-500',
+        description: 'Ministerio infantil donde los niños aprenden de Jesús de forma divertida.',
+        content: 'Clases dinámicas, cantos y actividades manuales para que los más pequeños conozcan el amor de Dios en un ambiente seguro.',
+        schedule: 'Domingos 11:30 AM',
+        leader: 'Equipo Kids',
+        icon: Users
     }
 };
 
 const MinistryDetail = () => {
     const { id } = useParams();
-    const ministry = ministriesData[id] || ministriesData['rebanito']; // Default fallback
+    const ministry = ministriesData[id];
+
+    if (!ministry) {
+        return (
+            <div className="min-h-screen flex items-center justify-center p-4">
+                <div className="text-center">
+                    <h2 className="text-2xl font-bold mb-4">Ministerio no encontrado</h2>
+                    <Link to="/ministerios" className="text-primary hover:underline">
+                        Volver a Ministerios
+                    </Link>
+                </div>
+            </div>
+        );
+    }
 
     const Icon = ministry.icon;
 
