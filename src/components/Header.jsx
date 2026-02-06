@@ -1,27 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { Menu as MenuIcon, X, User, ChevronDown } from 'lucide-react';
+import { Menu as MenuIcon, X, ChevronDown, Moon, Sun } from 'lucide-react';
 import { Button, Menu, MenuItem } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import RLogo from '../assets/logo.webp';
+import RLogo from '../assets/Rlogo.webp';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
   const location = useLocation();
-
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   // Close mobile menu on route change
   useEffect(() => {
     setIsOpen(false);
   }, [location]);
+
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+  }, [theme]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -29,6 +28,14 @@ const Header = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const toggleTheme = () => {
+    const nextTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(nextTheme);
+    localStorage.setItem('theme', nextTheme);
+    document.documentElement.classList.toggle('dark', nextTheme === 'dark');
+    window.dispatchEvent(new CustomEvent('theme-change', { detail: nextTheme }));
   };
 
   const navItems = [
@@ -77,24 +84,20 @@ const Header = () => {
 
   return (
     <motion.header 
-      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-        isScrolled 
-          ? 'bg-white/95 backdrop-blur-lg shadow-lg border-b border-gray-100/50' 
-          : 'bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-100/30'
-      }`}
+      className="fixed top-0 w-full z-50 transition-all duration-500"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className={`flex justify-between items-center transition-all duration-300 ${isScrolled ? 'h-16' : 'h-20'}`}>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center transition-all duration-300 h-14">
           {/* Logo */}
           <div className="flex items-center">
-            <Link to="/" className="flex items-center gap-3 group">
+            <Link to="/" className="flex items-center gap-2 group">
               <motion.img 
                 src={RLogo} 
                 alt="Logo Reflejo" 
-                className={`w-auto object-contain transition-all duration-300 ${isScrolled ? 'h-10' : 'h-12'}`}
+                className="w-auto object-contain transition-all duration-300 h-14"
                 whileHover={{ scale: 1.05, rotate: [0, -5, 5, 0] }}
                 transition={{ duration: 0.4 }}
               />
@@ -102,16 +105,16 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-1 items-center">
+          <nav className="hidden md:flex space-x-1 items-center rounded-full bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/40 dark:border-slate-700/50 px-1 py-1">
             {navItems.map((item) => (
               item.dropdown ? (
                 <div key={item.name} className="relative group">
                   <button
                     onClick={handleClick}
-                    className={`flex items-center gap-1 px-4 py-2 rounded-full font-medium text-sm lg:text-base transition-all duration-300 ${
+                    className={`flex items-center gap-1 px-3 py-1.5 rounded-full font-normal text-sm lg:text-[15px] transition-all duration-300 ${
                       isActive(item.href)
-                        ? 'text-primary bg-primary/5'
-                        : 'text-gray-600 hover:text-primary hover:bg-gray-50'
+                        ? 'text-primary bg-primary/10'
+                        : 'text-gray-600 dark:text-slate-300 hover:text-primary hover:bg-white/60 dark:hover:bg-slate-800/70'
                     }`}
                   >
                     {item.name}
@@ -182,10 +185,10 @@ const Header = () => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`relative px-4 py-2 rounded-full font-medium text-sm lg:text-base transition-all duration-300 ${
+                  className={`relative px-3 py-1.5 rounded-full font-normal text-sm lg:text-[15px] transition-all duration-300 ${
                     isActive(item.href)
-                      ? 'text-primary bg-primary/5'
-                      : 'text-gray-600 hover:text-primary hover:bg-gray-50'
+                      ? 'text-primary bg-primary/10'
+                      : 'text-gray-600 dark:text-slate-300 hover:text-primary hover:bg-white/60 dark:hover:bg-slate-800/70'
                   }`}
                 >
                   {item.name}
@@ -202,7 +205,15 @@ const Header = () => {
           </nav>
 
           {/* Action Buttons */}
-          <div className="hidden md:flex items-center space-x-3">
+          <div className="hidden md:flex items-center space-x-2">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="w-9 h-9 rounded-full border border-slate-300/70 dark:border-slate-600/70 bg-white/50 dark:bg-slate-800/70 text-slate-600 dark:text-slate-200 flex items-center justify-center"
+              aria-label="Alternar tema"
+            >
+              {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+            </button>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button 
                 component={Link}
@@ -217,24 +228,25 @@ const Header = () => {
                   fontWeight: 600,
                   textTransform: 'none',
                   borderRadius: '9999px',
-                  px: 3,
+                  px: 2.5,
                   boxShadow: '0 4px 15px -3px rgba(245, 158, 11, 0.4)',
                 }}
               >
                 Donar
               </Button>
             </motion.div>
-            <Link 
-              to="/login" 
-              className="flex items-center space-x-2 text-gray-500 hover:text-primary transition-all duration-300 px-3 py-2 rounded-full hover:bg-gray-50"
-            >
-              <User size={18} />
-              <span className="text-sm font-medium">Iniciar Sesión</span>
-            </Link>
           </div>
 
           {/* Mobile menu button */}
-          <div className="flex md:hidden items-center space-x-3">
+          <div className="flex md:hidden items-center space-x-2">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="w-8 h-8 rounded-full border border-slate-300/70 dark:border-slate-600/70 bg-white/50 dark:bg-slate-800/70 text-slate-600 dark:text-slate-200 flex items-center justify-center"
+              aria-label="Alternar tema"
+            >
+              {theme === 'light' ? <Moon size={14} /> : <Sun size={14} />}
+            </button>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button 
                 component={Link}
@@ -341,22 +353,6 @@ const Header = () => {
                   )}
                 </React.Fragment>
               ))}
-              <motion.div 
-                className="pt-4 border-t border-gray-100 mt-4"
-                custom={navItems.length + 5}
-                variants={menuItemVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                <Link 
-                  to="/login" 
-                  className="flex w-full items-center justify-center space-x-2 text-gray-600 py-3 hover:text-primary rounded-xl hover:bg-gray-50 transition-all" 
-                  onClick={() => setIsOpen(false)}
-                >
-                  <User size={20} />
-                  <span className="font-medium">Iniciar Sesión</span>
-                </Link>
-              </motion.div>
             </div>
           </motion.div>
         )}
