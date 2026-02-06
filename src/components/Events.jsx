@@ -1,246 +1,249 @@
-import React, { useState, useMemo } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import { Calendar, Clock, MapPin } from 'lucide-react';
+import React, { useMemo, useState } from 'react';
+import { Calendar, Megaphone, ShieldCheck, Star } from 'lucide-react';
 import CalendarBg from '../assets/RUGIDOdeFE.webp';
 
-// Función para generar domingos del año
-const getSundays = (year) => {
-  const sundays = [];
-  const date = new Date(year, 0, 1);
-  while (date.getDay() !== 0) {
-    date.setDate(date.getDate() + 1);
-  }
-  while (date.getFullYear() === year) {
-    sundays.push(new Date(date));
-    date.setDate(date.getDate() + 7);
-  }
-  return sundays;
+const publicationLevels = {
+  3: {
+    stars: '⭐⭐⭐',
+    title: 'Publicación Total',
+    description: 'Eventos abiertos al público general, celebraciones y servicios especiales.',
+  },
+  2: {
+    stars: '⭐⭐',
+    title: 'Publicación Limitada',
+    description: 'Eventos para grupos específicos (matrimonios, mujeres, jóvenes) que requieren registro previo.',
+  },
+  1: {
+    stars: '⭐',
+    title: 'Uso Interno / No Publicar',
+    description: 'Capacitaciones, retiros de miembros o logística de la iglesia.',
+  },
 };
 
-// Generar eventos recurrentes para 2026
-const recurrentEvents = getSundays(2026).flatMap((date, index) => {
-  const dateString = date.toISOString().split('T')[0];
-  const quarter = Math.floor((date.getMonth() + 3) / 3);
-  
-  return [
-    {
-      id: `sun-mtp-${index}`,
-      title: 'Servicio Dominical Metepec',
-      date: dateString,
-      time: '10:00 AM',
-      location: 'Sede Metepec',
-      quarter: quarter,
-      type: 'Recurrente'
-    },
-    {
-      id: `sun-cdmx-${index}`,
-      title: 'Servicio Dominical CdMx',
-      date: dateString,
-      time: '05:00 PM',
-      location: 'Sede CdMx',
-      quarter: quarter,
-      type: 'Recurrente'
-    }
-  ];
-});
-
-const specialEvents = [
-  { id: 2, title: 'Retiro de Enero', date: '2026-01-17', time: 'All Day', location: 'Centro de Retiros', quarter: 1, type: 'Campamento' },
-  { id: 3, title: 'Noche de Adoración', date: '2026-01-24', time: '07:00 PM', location: 'Sede CdMx', quarter: 1, type: 'Especial' },
-
-  { id: 4, title: 'Conferencia de Matrimonios', date: '2026-03-20', time: '06:00 PM', location: 'Hotel Radisson', quarter: 1, type: 'Conferencia' },
-  { id: 5, title: 'Día de la Familia', date: '2026-04-15', time: '11:00 AM', location: 'Parque Bicentenario', quarter: 2, type: 'Comunidad' },
-  { id: 6, title: 'Cena de Acción de Gracias', date: '2026-11-26', time: '08:00 PM', location: 'Sede Metepec', quarter: 4, type: 'Celebración' },
+const monthlySchedule = [
+  {
+    month: 'Enero',
+    events: [
+      { date: 'Domingo 4', detail: 'Día de la Visión, Evangelístico y cena del Señor.', rating: 3 },
+      { date: '7', detail: 'Consagración Metepec.', rating: 1 },
+      { date: '9', detail: 'Consagración CDMX.', rating: 1 },
+      { date: '20-22', detail: 'Capacitación en Los Mochis.', rating: 1 },
+      { date: '28-29', detail: 'Matrimonios (Metepec y CDMX).', rating: 2 },
+      { date: '30-31', detail: 'Retiro Reflejo.', rating: 1 },
+    ],
+  },
+  {
+    month: 'Febrero',
+    events: [
+      { date: 'Domingo 1', detail: 'Evangelístico y cena del Señor.', rating: 3 },
+      { date: 'Miércoles 11 y Viernes 13', detail: 'Cena de Amor (Metepec y CDMX).', rating: 2 },
+      { date: '25-26', detail: 'Matrimonios (Metepec y CDMX).', rating: 2 },
+      { date: '27-28', detail: 'Retiro Reflejo.', rating: 1 },
+    ],
+  },
+  {
+    month: 'Marzo',
+    events: [
+      { date: 'Domingo 1', detail: 'Evangelístico y cena del Señor.', rating: 3 },
+      { date: '25-26', detail: 'Matrimonios (Metepec y CDMX).', rating: 2 },
+    ],
+  },
+  {
+    month: 'Abril (Semana Santa)',
+    events: [
+      { date: '2-3', detail: 'Jueves y Viernes Santo.', rating: 3 },
+      { date: '4', detail: 'Bautizos.', rating: 3 },
+      { date: '5', detail: 'Domingo de Resurrección (Obra y canto).', rating: 3 },
+      { date: 'Sábado 18', detail: 'Salida de Mujeres.', rating: 2 },
+      { date: 'Domingo 26', detail: 'Día del Niño (Fiesta de espuma).', rating: 3 },
+      { date: '29-30', detail: 'Matrimonios (Metepec y CDMX).', rating: 2 },
+    ],
+  },
+  {
+    month: 'Mayo',
+    events: [
+      { date: '2 y 9', detail: 'Conferencia Abrazadas (Metepec y CDMX).', rating: 2 },
+      { date: 'Domingo 3', detail: 'Evangelístico y cena del Señor.', rating: 3 },
+      { date: 'Domingo 10', detail: 'Día de la Madre.', rating: 3 },
+      { date: '13 y 15', detail: 'Día del Maestro (Metepec y CDMX).', rating: 2 },
+      { date: '27-28', detail: 'Matrimonios (Metepec y CDMX).', rating: 2 },
+      { date: '29-31', detail: 'Retiro Reflejo.', rating: 1 },
+    ],
+  },
+  {
+    month: 'Junio',
+    events: [
+      { date: 'Domingo 7', detail: 'Evangelístico y cena del Señor.', rating: 3 },
+      { date: 'Domingo 21', detail: 'Día del Padre.', rating: 3 },
+      { date: '24-25', detail: 'Matrimonios (Metepec y CDMX).', rating: 2 },
+      { date: '26-27', detail: 'Retiro de Matrimonios (Tentativo Acapulco).', rating: 2 },
+    ],
+  },
+  {
+    month: 'Julio',
+    events: [
+      { date: 'Domingo 5', detail: 'Evangelístico y cena del Señor.', rating: 3 },
+      { date: '6-10', detail: 'Escuela Bíblica de Vacaciones (EBV).', rating: 3 },
+      { date: 'Viernes 10', detail: 'Congreso Juvenil.', rating: 2 },
+      { date: 'Sábado 18', detail: 'Camping Familiar.', rating: 3 },
+      { date: '22-23', detail: 'Matrimonios (Metepec y CDMX).', rating: 2 },
+    ],
+  },
+  {
+    month: 'Agosto',
+    events: [
+      { date: 'Domingo 2', detail: 'Evangelístico y cena del Señor.', rating: 3 },
+      { date: 'Domingo 16', detail: 'Bendición de regreso a clases.', rating: 3 },
+      { date: '26-27', detail: 'Matrimonios (Metepec y CDMX).', rating: 2 },
+      { date: '28-29', detail: 'Retiro Reflejo.', rating: 1 },
+    ],
+  },
+  {
+    month: 'Septiembre',
+    events: [
+      { date: 'Domingo 6', detail: 'Evangelístico y cena del Señor.', rating: 3 },
+      { date: '9 y 11', detail: 'Taco Break Mexicano (Metepec y CDMX).', rating: 2 },
+      { date: 'Domingo 13', detail: 'Servicio en la Brecha por México.', rating: 3 },
+      { date: 'Domingo 27', detail: 'Día de la Biblia (Exposición).', rating: 3 },
+      { date: '24 y 30', detail: 'Matrimonios (CDMX y Metepec).', rating: 2 },
+    ],
+  },
+  {
+    month: 'Octubre',
+    events: [
+      { date: 'Domingo 4', detail: 'Evangelístico y cena del Señor.', rating: 3 },
+      { date: 'Domingo 11', detail: 'Día del Pastor.', rating: 3 },
+      { date: '23-25', detail: 'Retiro Reflejo.', rating: 1 },
+      { date: '28-29', detail: 'Matrimonios (Metepec y CDMX).', rating: 2 },
+      { date: 'Viernes 30', detail: 'Congreso Día de la Reforma.', rating: 3 },
+    ],
+  },
+  {
+    month: 'Noviembre',
+    events: [
+      { date: 'Domingo 1', detail: 'Evangelístico, Cena del Señor y Día de Misiones.', rating: 3 },
+      { date: 'Domingo 15', detail: 'Bautismos #2.', rating: 3 },
+      { date: '18 y 26', detail: 'Matrimonios (Metepec y CDMX).', rating: 2 },
+      { date: '25 y 27', detail: 'Cena de Acción de Gracias (Metepec y CDMX).', rating: 2 },
+      { date: 'Domingo 29', detail: 'Servicio de Acción de Gracias.', rating: 3 },
+    ],
+  },
+  {
+    month: 'Diciembre',
+    events: [
+      { date: '4-6', detail: 'Retiro Reflejo.', rating: 1 },
+      { date: 'Domingo 6', detail: 'Aniversario Iglesia Reflejo CDMX.', rating: 3 },
+      { date: 'Domingo 13', detail: 'Aniversario Iglesia Reflejo Metepec.', rating: 3 },
+      { date: '16 y 18', detail: 'Posadas (Metepec y CDMX).', rating: 2 },
+      { date: '20', detail: 'Especial Navideño.', rating: 3 },
+      { date: '24-25', detail: 'Navidad.', rating: 3 },
+      { date: '31', detail: 'Cena de Año Nuevo.', rating: 3 },
+    ],
+  },
 ];
 
-const events = [...recurrentEvents, ...specialEvents].filter((event) => event.quarter <= 3).sort((a, b) => new Date(a.date) - new Date(b.date));
+const visibilityStyles = {
+  3: 'bg-white/16 border-amber-300/60 text-white opacity-100 shadow-[0_10px_40px_-20px_rgba(251,191,36,0.65)]',
+  2: 'bg-white/10 border-white/25 text-slate-100 opacity-85',
+  1: 'bg-slate-900/50 border-white/10 text-slate-300 opacity-65',
+};
 
-const filters = [
-  { value: 'all', label: 'Todo el año' },
-  { value: '1', label: '1er trimestre' },
-  { value: '2', label: '2º trimestre' },
-  { value: '3', label: '3er trimestre' },
+const audienceFilters = [
+  { key: 'all', label: 'Todas las publicaciones' },
+  { key: '3', label: '⭐⭐⭐ Público general' },
+  { key: '2', label: '⭐⭐ Publicación limitada' },
+  { key: '1', label: '⭐ Uso interno' },
 ];
 
 const Events = () => {
-  const [filter, setFilter] = useState('all');
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  
-  const filteredEvents = filter === 'all' 
-    ? events 
-    : events.filter(e => e.quarter === parseInt(filter));
+  const [audience, setAudience] = useState('all');
 
-  const handleOpen = (event) => setSelectedEvent(event);
-  const handleClose = () => setSelectedEvent(null);
+  const filteredSchedule = useMemo(() => {
+    if (audience === 'all') return monthlySchedule;
 
-  const formatDate = (dateString) => {
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      return new Date(dateString).toLocaleDateString('es-ES', options);
-  };
-
-  const getDay = (dateString) => String(new Date(dateString).getDate()).padStart(2, '0');
-  const getMonth = (dateString) => new Date(dateString).toLocaleDateString('es-ES', { month: 'short' }).toUpperCase();
-  const getWeekday = (dateString) => {
-    const weekday = new Date(dateString).toLocaleDateString('es-ES', { weekday: 'long' });
-    return weekday.charAt(0).toUpperCase() + weekday.slice(1);
-  };
-  const getQuarterLabel = (quarter) => `${quarter}º TRIMESTRE`;
+    return monthlySchedule
+      .map((month) => ({
+        ...month,
+        events: month.events.filter((event) => String(event.rating) === audience),
+      }))
+      .filter((month) => month.events.length > 0);
+  }, [audience]);
 
   return (
-    <section id="events" className="relative py-28 overflow-hidden bg-slate-950 text-white">
+    <section id="events" className="relative overflow-hidden bg-slate-950 py-24 text-white">
       <div className="absolute inset-0">
-        <img src={CalendarBg} alt="Ambiente de adoración" className="w-full h-full object-cover opacity-25" />
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-950/85 to-slate-900/70"></div>
-        <div className="absolute -top-32 -right-20 w-[520px] h-[520px] bg-blue-500/40 blur-3xl rounded-full"></div>
-        <div className="absolute -bottom-40 -left-24 w-[520px] h-[520px] bg-amber-500/35 blur-3xl rounded-full"></div>
+        <img src={CalendarBg} alt="Calendario de Iglesia Reflejo" className="h-full w-full object-cover opacity-15" />
+        <div className="absolute inset-0 bg-slate-950/90" />
       </div>
 
-      <div className="relative container mx-auto px-4 max-w-6xl">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10 mb-16">
-          <div>
-            <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-[0.55em] uppercase text-blue-200/80">
-              <Calendar className="w-4 h-4" />
-              Agenda oficial
-            </span>
-            <h2 className="mt-5 text-4xl md:text-5xl font-black leading-tight">
-              Calendario de Eventos <span className="text-amber-300">2026</span>
-            </h2>
-            <p className="mt-4 max-w-xl text-slate-200/80 text-base md:text-lg">
-              Planea tu próximo paso y acompáñanos en cada momento clave de nuestra familia REFLEJO. Actualizamos esta agenda por 3 trimestres para que no te pierdas nada.
-            </p>
+      <div className="relative container mx-auto max-w-7xl px-4">
+        <div className="mb-10 rounded-3xl border border-white/15 bg-white/5 p-6 backdrop-blur-xl md:p-8">
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <span className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.45em] text-blue-200/80">
+                <Calendar className="h-4 w-4" /> Agenda anual
+              </span>
+              <h2 className="mt-3 text-3xl font-semibold md:text-4xl">Calendario 2026 y política de publicación</h2>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {audienceFilters.map((item) => (
+                <button
+                  key={item.key}
+                  type="button"
+                  onClick={() => setAudience(item.key)}
+                  className={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] transition ${
+                    audience === item.key
+                      ? 'border-amber-300/80 bg-amber-300 text-slate-900'
+                      : 'border-white/25 bg-white/5 text-slate-200 hover:bg-white/15'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <div className="flex flex-wrap gap-3">
-            {filters.map(({ value, label }) => (
-              <button
-                key={value}
-                type="button"
-                onClick={() => setFilter(value)}
-                className={`relative px-5 md:px-6 py-2.5 rounded-full text-sm font-semibold tracking-wide transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${
-                  filter === value
-                    ? 'bg-amber-300 text-slate-900 shadow-[0_10px_30px_-15px_rgba(251,191,36,0.7)]'
-                    : 'bg-white/10 text-slate-200 hover:bg-white/20 hover:text-white'
-                }`}
-              >
-                {label}
-              </button>
-            ))}
+          <div className="mt-6 grid gap-3 md:grid-cols-3">
+            {Object.entries(publicationLevels)
+              .sort((a, b) => Number(b[0]) - Number(a[0]))
+              .map(([key, level]) => (
+                <article key={key} className="rounded-2xl border border-white/15 bg-slate-900/40 p-4">
+                  <p className="text-sm font-bold text-amber-200">{level.stars} {level.title}</p>
+                  <p className="mt-2 text-sm text-slate-200/80">{level.description}</p>
+                </article>
+              ))}
           </div>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-          {filteredEvents.map((event) => (
-            <article
-              key={event.id}
-              onClick={() => handleOpen(event)}
-              className="relative rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-7 pb-8 flex flex-col gap-6 transition-all duration-300 cursor-pointer shadow-[0_25px_55px_-35px_rgba(15,23,42,0.8)] hover:-translate-y-1.5 hover:border-white/25 hover:shadow-[0_35px_70px_-40px_rgba(15,23,42,0.8)] group"
-            >
-              <div className="absolute -top-7 left-7">
-                <div className="w-16 h-16 rounded-full bg-slate-950 border border-white/20 flex flex-col items-center justify-center text-xs font-semibold uppercase tracking-[0.4em] text-slate-200 shadow-[0_8px_25px_-15px_rgba(15,23,42,1)] group-hover:border-white/40 transition-colors">
-                  <span className="text-lg font-black leading-none">{String(event.id).padStart(2, '0')}</span>
-                  <span className="text-[10px] tracking-[0.5em] mt-1">ID</span>
-                </div>
-              </div>
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {filteredSchedule.map((month) => (
+            <article key={month.month} className="rounded-3xl border border-white/15 bg-slate-900/35 p-6 backdrop-blur-md">
+              <h3 className="text-xl font-semibold uppercase tracking-[0.12em] text-amber-200">{month.month}</h3>
 
-              <div className="flex items-start gap-5 mt-4">
-                <div className="flex flex-col items-center justify-start min-w-[70px]">
-                  <span className="text-[46px] font-black leading-none tracking-tight text-white">{getDay(event.date)}</span>
-                  <span className="mt-2 text-xs font-semibold uppercase tracking-[0.3em] text-slate-300">{getMonth(event.date)}</span>
-                </div>
-                <div className="flex-1">
-                  <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.5em] text-slate-300/80">
-                    {getWeekday(event.date)}
-                  </span>
-                  <h3 className="mt-3 text-2xl font-semibold leading-snug text-white group-hover:text-amber-200 transition-colors">
-                    {event.title}
-                  </h3>
-                  <p className="mt-3 text-sm text-slate-200/80 leading-relaxed">
-                    {event.type} en {event.location}. Únete y compartamos este momento juntos.
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-3 text-sm text-slate-100/90">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-slate-900/60 border border-white/10 flex items-center justify-center">
-                    <Clock className="w-5 h-5 text-amber-300" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-[11px] uppercase tracking-[0.4em] text-slate-400">Horario</p>
-                    <p className="font-semibold text-base tracking-wide text-white">{event.time}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-slate-900/60 border border-white/10 flex items-center justify-center">
-                    <MapPin className="w-5 h-5 text-blue-300" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-[11px] uppercase tracking-[0.4em] text-slate-400">Ubicación</p>
-                    <p className="font-semibold text-base tracking-wide text-white">{event.location}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-auto pt-5 border-t border-white/10 flex items-center justify-between gap-4">
-                <span className="text-[10px] uppercase tracking-[0.55em] text-slate-300">
-                  {getQuarterLabel(event.quarter)}
-                </span>
-                <span className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-500 to-amber-400 text-xs font-bold uppercase tracking-[0.4em] text-slate-950 shadow-[0_10px_25px_-15px_rgba(37,99,235,0.8)] group-hover:shadow-[0_15px_30px_-12px_rgba(37,99,235,0.65)] transition-shadow">
-                  {event.type}
-                </span>
-              </div>
-
-              <div className="absolute inset-x-0 bottom-0 h-1.5 bg-gradient-to-r from-blue-500 via-slate-300 to-amber-400 opacity-80 rounded-b-3xl"></div>
+              <ul className="mt-5 space-y-3">
+                {month.events.map((event) => (
+                  <li key={`${month.month}-${event.date}-${event.detail}`} className={`rounded-2xl border p-3 transition ${visibilityStyles[event.rating]}`}>
+                    <div className="flex items-start justify-between gap-3">
+                      <p className="text-sm font-semibold uppercase tracking-[0.08em]">{event.date}</p>
+                      <span className="inline-flex items-center gap-1 text-xs font-bold">
+                        <Star className="h-3.5 w-3.5" />
+                        {publicationLevels[event.rating].stars}
+                      </span>
+                    </div>
+                    <p className="mt-2 text-sm leading-relaxed">{event.detail}</p>
+                  </li>
+                ))}
+              </ul>
             </article>
           ))}
+        </div>
 
-          {filteredEvents.length === 0 && (
-            <div className="col-span-full text-center py-20 border border-dashed border-white/20 rounded-3xl bg-white/5">
-              <Calendar size={48} className="mx-auto mb-6 opacity-70" />
-              <p className="text-slate-200/80 text-lg">No hay eventos programados para este periodo.</p>
-            </div>
-          )}
+        <div className="mt-8 flex items-center justify-center gap-2 text-xs text-slate-300/90">
+          <Megaphone className="h-4 w-4" />
+          Los eventos ⭐⭐⭐ se muestran con mayor fuerza visual; ⭐⭐ y ⭐ se muestran más translúcidos.
+          <ShieldCheck className="h-4 w-4" />
         </div>
       </div>
-
-      <Dialog open={!!selectedEvent} onClose={handleClose} maxWidth="sm" fullWidth>
-        {selectedEvent && (
-          <>
-            <DialogTitle sx={{ fontWeight: 'bold', fontSize: '1.6rem', pb: 1 }}>{selectedEvent.title}</DialogTitle>
-            <DialogContent>
-              <div className="flex items-center gap-2 mb-4 text-primary font-medium bg-blue-50 w-fit px-3 py-1 rounded-full text-sm">
-                <Calendar size={16} />
-                {formatDate(selectedEvent.date)}
-              </div>
-
-              <p className="text-gray-600 mb-6">
-                Acompáñanos en este evento especial diseñado para edificar tu vida. No olvides invitar a un amigo.
-              </p>
-
-              <div className="space-y-3 bg-gray-50 p-4 rounded-lg">
-                <div className="flex items-center text-gray-700">
-                  <Clock className="w-5 h-5 mr-3 text-blue-500" />
-                  <span className="font-medium">Hora:</span>
-                  <span className="ml-2">{selectedEvent.time}</span>
-                </div>
-                <div className="flex items-center text-gray-700">
-                  <MapPin className="w-5 h-5 mr-3 text-blue-500" />
-                  <span className="font-medium">Ubicación:</span>
-                  <span className="ml-2">{selectedEvent.location}</span>
-                </div>
-              </div>
-            </DialogContent>
-            <DialogActions sx={{ p: 3 }}>
-              <button onClick={handleClose} className="px-5 py-2 rounded-full text-sm font-semibold text-slate-700 hover:text-slate-900">
-                Cerrar
-              </button>
-              <button className="px-5 py-2 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-amber-400 shadow-md hover:shadow-lg transition-shadow">
-                Guardar en calendario
-              </button>
-            </DialogActions>
-          </>
-        )}
-      </Dialog>
     </section>
   );
 };
