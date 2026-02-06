@@ -24,120 +24,141 @@ const monthlySchedule = [
   {
     month: 'Enero',
     events: [
-      { date: 'Domingo 4', detail: 'Día de la Visión, Evangelístico y cena del Señor.', rating: 3 },
-      { date: '7', detail: 'Consagración Metepec.', rating: 1 },
-      { date: '9', detail: 'Consagración CDMX.', rating: 1 },
-      { date: '20-22', detail: 'Capacitación en Los Mochis.', rating: 1 },
-      { date: '28-29', detail: 'Matrimonios (Metepec y CDMX).', rating: 2 },
-      { date: '30-31', detail: 'Retiro Reflejo.', rating: 1 },
+      { date: 'Domingo 4', detail: 'Día de la Visión.', rating: 3, category: 'Visión' },
+      { date: 'Domingo 4', detail: 'Evangelístico y cena del Señor.', rating: 3, category: 'Evangelístico' },
+      { date: '7', detail: 'Consagración Metepec.', rating: 1, category: 'Consagración' },
+      { date: '9', detail: 'Consagración CDMX.', rating: 1, category: 'Consagración' },
+      { date: '20-22', detail: 'Mochis capacitación.', rating: 1, category: 'Capacitación' },
+      { date: '28', detail: 'Matrimonios Metepec.', rating: 2, category: 'Matrimonios' },
+      { date: '29', detail: 'Matrimonios CDMX.', rating: 2, category: 'Matrimonios' },
+      { date: '30-31', detail: 'Retiro Reflejo.', rating: 1, category: 'Retiro' },
     ],
   },
   {
     month: 'Febrero',
     events: [
-      { date: 'Domingo 1', detail: 'Evangelístico y cena del Señor.', rating: 3 },
-      { date: 'Miércoles 11 y Viernes 13', detail: 'Cena de Amor (Metepec y CDMX).', rating: 2 },
-      { date: '25-26', detail: 'Matrimonios (Metepec y CDMX).', rating: 2 },
-      { date: '27-28', detail: 'Retiro Reflejo.', rating: 1 },
+      { date: 'Domingo 1', detail: 'Evangelístico y cena del Señor.', rating: 3, category: 'Evangelístico' },
+      { date: 'Miércoles 11', detail: 'Cena de Amor Metepec.', rating: 2, category: 'Cena de Amor' },
+      { date: 'Viernes 13', detail: 'Cena de Amor CDMX.', rating: 2, category: 'Cena de Amor' },
+      { date: '25', detail: 'Matrimonios Metepec.', rating: 2, category: 'Matrimonios' },
+      { date: '26', detail: 'Matrimonios CDMX.', rating: 2, category: 'Matrimonios' },
+      { date: '27-28', detail: 'Retiro Reflejo.', rating: 1, category: 'Retiro' },
     ],
   },
   {
     month: 'Marzo',
     events: [
-      { date: 'Domingo 1', detail: 'Evangelístico y cena del Señor.', rating: 3 },
-      { date: '25-26', detail: 'Matrimonios (Metepec y CDMX).', rating: 2 },
+      { date: 'Domingo 1', detail: 'Evangelístico y cena del Señor.', rating: 3, category: 'Evangelístico' },
+      { date: '25', detail: 'Matrimonios Metepec.', rating: 2, category: 'Matrimonios' },
+      { date: '26', detail: 'Matrimonios CDMX.', rating: 2, category: 'Matrimonios' },
     ],
   },
   {
     month: 'Abril (Semana Santa)',
     events: [
-      { date: '2-3', detail: 'Jueves y Viernes Santo.', rating: 3 },
-      { date: '4', detail: 'Bautizos.', rating: 3 },
-      { date: '5', detail: 'Domingo de Resurrección (Obra y canto).', rating: 3 },
-      { date: 'Sábado 18', detail: 'Salida de Mujeres.', rating: 2 },
-      { date: 'Domingo 26', detail: 'Día del Niño (Fiesta de espuma).', rating: 3 },
-      { date: '29-30', detail: 'Matrimonios (Metepec y CDMX).', rating: 2 },
+      { date: '2', detail: 'Jueves Santo.', rating: 3, category: 'Semana Santa' },
+      { date: '3', detail: 'Viernes Santo.', rating: 3, category: 'Semana Santa' },
+      { date: '4', detail: 'Bautizos.', rating: 3, category: 'Bautizos' },
+      { date: '5', detail: 'Domingo de Resurrección (Obra y canto).', rating: 3, category: 'Semana Santa' },
+      { date: 'Sábado 18', detail: 'Salida Mujeres (día completo).', rating: 2, category: 'Salida' },
+      { date: 'Domingo 26', detail: 'Día del Niño (espuma).', rating: 3, category: 'Celebración' },
+      { date: '29', detail: 'Matrimonios Metepec.', rating: 2, category: 'Matrimonios' },
+      { date: '30', detail: 'Matrimonios CDMX.', rating: 2, category: 'Matrimonios' },
     ],
   },
   {
     month: 'Mayo',
     events: [
-      { date: '2 y 9', detail: 'Conferencia Abrazadas (Metepec y CDMX).', rating: 2 },
-      { date: 'Domingo 3', detail: 'Evangelístico y cena del Señor.', rating: 3 },
-      { date: 'Domingo 10', detail: 'Día de la Madre.', rating: 3 },
-      { date: '13 y 15', detail: 'Día del Maestro (Metepec y CDMX).', rating: 2 },
-      { date: '27-28', detail: 'Matrimonios (Metepec y CDMX).', rating: 2 },
-      { date: '29-31', detail: 'Retiro Reflejo.', rating: 1 },
+      { date: '2', detail: 'Conferencia Abrazadas (Metepec).', rating: 2, category: 'Conferencia' },
+      { date: 'Domingo 3', detail: 'Evangelístico y cena del Señor.', rating: 3, category: 'Evangelístico' },
+      { date: '9', detail: 'Conferencia Abrazadas (CDMX).', rating: 2, category: 'Conferencia' },
+      { date: 'Domingo 10', detail: 'Día de la Madre.', rating: 3, category: 'Celebración' },
+      { date: 'Miércoles 13', detail: 'Día del Maestro Metepec.', rating: 2, category: 'Celebración' },
+      { date: 'Viernes 15', detail: 'Día del Maestro CDMX.', rating: 2, category: 'Celebración' },
+      { date: '27', detail: 'Matrimonios Metepec.', rating: 2, category: 'Matrimonios' },
+      { date: '28', detail: 'Matrimonios CDMX.', rating: 2, category: 'Matrimonios' },
+      { date: '29-31', detail: 'Retiro Reflejo.', rating: 1, category: 'Retiro' },
     ],
   },
   {
     month: 'Junio',
     events: [
-      { date: 'Domingo 7', detail: 'Evangelístico y cena del Señor.', rating: 3 },
-      { date: 'Domingo 21', detail: 'Día del Padre.', rating: 3 },
-      { date: '24-25', detail: 'Matrimonios (Metepec y CDMX).', rating: 2 },
-      { date: '26-27', detail: 'Retiro de Matrimonios (Tentativo Acapulco).', rating: 2 },
+      { date: 'Domingo 7', detail: 'Evangelístico y cena del Señor.', rating: 3, category: 'Evangelístico' },
+      { date: 'Domingo 21', detail: 'Día del Padre.', rating: 3, category: 'Celebración' },
+      { date: '24', detail: 'Matrimonios Metepec.', rating: 2, category: 'Matrimonios' },
+      { date: '25', detail: 'Matrimonios CDMX.', rating: 2, category: 'Matrimonios' },
+      { date: 'Viernes 26-27', detail: 'Retiro de Matrimonios (Acapulco?).', rating: 1, category: 'Retiro' },
     ],
   },
   {
     month: 'Julio',
     events: [
-      { date: 'Domingo 5', detail: 'Evangelístico y cena del Señor.', rating: 3 },
-      { date: '6-10', detail: 'Escuela Bíblica de Vacaciones (EBV).', rating: 3 },
-      { date: 'Viernes 10', detail: 'Congreso Juvenil.', rating: 2 },
-      { date: 'Sábado 18', detail: 'Camping Familiar.', rating: 3 },
-      { date: '22-23', detail: 'Matrimonios (Metepec y CDMX).', rating: 2 },
+      { date: 'Domingo 5', detail: 'Evangelístico y cena del Señor.', rating: 3, category: 'Evangelístico' },
+      { date: '6-10', detail: 'EBV.', rating: 3, category: 'EBV' },
+      { date: 'Viernes 10', detail: 'Congreso Juvenil.', rating: 2, category: 'Congreso' },
+      { date: 'Sábado 18', detail: 'Camping Familiar (todo el día / noche).', rating: 3, category: 'Campamento' },
+      { date: '22', detail: 'Matrimonios Metepec.', rating: 2, category: 'Matrimonios' },
+      { date: '23', detail: 'Matrimonios CDMX.', rating: 2, category: 'Matrimonios' },
     ],
   },
   {
     month: 'Agosto',
     events: [
-      { date: 'Domingo 2', detail: 'Evangelístico y cena del Señor.', rating: 3 },
-      { date: 'Domingo 16', detail: 'Bendición de regreso a clases.', rating: 3 },
-      { date: '26-27', detail: 'Matrimonios (Metepec y CDMX).', rating: 2 },
-      { date: '28-29', detail: 'Retiro Reflejo.', rating: 1 },
+      { date: 'Domingo 2', detail: 'Evangelístico y cena del Señor.', rating: 3, category: 'Evangelístico' },
+      { date: 'Domingo 16', detail: 'Bendición regreso a clases.', rating: 3, category: 'Celebración' },
+      { date: '26', detail: 'Matrimonios Metepec.', rating: 2, category: 'Matrimonios' },
+      { date: '27', detail: 'Matrimonios CDMX.', rating: 2, category: 'Matrimonios' },
+      { date: '28-29', detail: 'Retiro Reflejo.', rating: 1, category: 'Retiro' },
     ],
   },
   {
     month: 'Septiembre',
     events: [
-      { date: 'Domingo 6', detail: 'Evangelístico y cena del Señor.', rating: 3 },
-      { date: '9 y 11', detail: 'Taco Break Mexicano (Metepec y CDMX).', rating: 2 },
-      { date: 'Domingo 13', detail: 'Servicio en la Brecha por México.', rating: 3 },
-      { date: 'Domingo 27', detail: 'Día de la Biblia (Exposición).', rating: 3 },
-      { date: '24 y 30', detail: 'Matrimonios (CDMX y Metepec).', rating: 2 },
+      { date: 'Domingo 6', detail: 'Evangelístico y cena del Señor.', rating: 3, category: 'Evangelístico' },
+      { date: '9', detail: 'Taco Break Mexicano (Metepec).', rating: 2, category: 'Convivio' },
+      { date: '11', detail: 'Taco Break Mexicano (CDMX).', rating: 2, category: 'Convivio' },
+      { date: 'Domingo 13', detail: 'Servicio en la Brecha por México.', rating: 3, category: 'Servicio' },
+      { date: '24', detail: 'Matrimonios CDMX.', rating: 2, category: 'Matrimonios' },
+      { date: 'Domingo 27', detail: 'Día de la Biblia (Exposición).', rating: 3, category: 'Celebración' },
+      { date: '30', detail: 'Matrimonios Metepec.', rating: 2, category: 'Matrimonios' },
     ],
   },
   {
     month: 'Octubre',
     events: [
-      { date: 'Domingo 4', detail: 'Evangelístico y cena del Señor.', rating: 3 },
-      { date: 'Domingo 11', detail: 'Día del Pastor.', rating: 3 },
-      { date: '23-25', detail: 'Retiro Reflejo.', rating: 1 },
-      { date: '28-29', detail: 'Matrimonios (Metepec y CDMX).', rating: 2 },
-      { date: 'Viernes 30', detail: 'Congreso Día de la Reforma.', rating: 3 },
+      { date: 'Domingo 4', detail: 'Evangelístico y cena del Señor.', rating: 3, category: 'Evangelístico' },
+      { date: 'Domingo 11', detail: 'Día del Pastor.', rating: 3, category: 'Celebración' },
+      { date: '23-25', detail: 'Retiro Reflejo.', rating: 1, category: 'Retiro' },
+      { date: '28', detail: 'Matrimonios Metepec.', rating: 2, category: 'Matrimonios' },
+      { date: '29', detail: 'Matrimonios CDMX.', rating: 2, category: 'Matrimonios' },
+      { date: 'Viernes 30', detail: 'Congreso Día de la Reforma.', rating: 3, category: 'Congreso' },
     ],
   },
   {
     month: 'Noviembre',
     events: [
-      { date: 'Domingo 1', detail: 'Evangelístico, Cena del Señor y Día de Misiones.', rating: 3 },
-      { date: 'Domingo 15', detail: 'Bautismos #2.', rating: 3 },
-      { date: '18 y 26', detail: 'Matrimonios (Metepec y CDMX).', rating: 2 },
-      { date: '25 y 27', detail: 'Cena de Acción de Gracias (Metepec y CDMX).', rating: 2 },
-      { date: 'Domingo 29', detail: 'Servicio de Acción de Gracias.', rating: 3 },
+      { date: 'Domingo 1', detail: 'Evangelístico y cena del Señor.', rating: 3, category: 'Evangelístico' },
+      { date: 'Domingo 1', detail: 'Día de Misiones.', rating: 3, category: 'Celebración' },
+      { date: 'Domingo 15', detail: 'Bautismos #2.', rating: 3, category: 'Bautizos' },
+      { date: '18', detail: 'Matrimonios Metepec.', rating: 2, category: 'Matrimonios' },
+      { date: '25', detail: 'Cena Acción de Gracias Metepec.', rating: 2, category: 'Acción de Gracias' },
+      { date: '26', detail: 'Matrimonios CDMX.', rating: 2, category: 'Matrimonios' },
+      { date: '27', detail: 'Cena Acción de Gracias CDMX.', rating: 2, category: 'Acción de Gracias' },
+      { date: 'Domingo 29', detail: 'Acción de Gracias.', rating: 3, category: 'Acción de Gracias' },
     ],
   },
   {
     month: 'Diciembre',
     events: [
-      { date: '4-6', detail: 'Retiro Reflejo.', rating: 1 },
-      { date: 'Domingo 6', detail: 'Aniversario Iglesia Reflejo CDMX.', rating: 3 },
-      { date: 'Domingo 13', detail: 'Aniversario Iglesia Reflejo Metepec.', rating: 3 },
-      { date: '16 y 18', detail: 'Posadas (Metepec y CDMX).', rating: 2 },
-      { date: '20', detail: 'Especial Navideño.', rating: 3 },
-      { date: '24-25', detail: 'Navidad.', rating: 3 },
-      { date: '31', detail: 'Cena de Año Nuevo.', rating: 3 },
+      { date: '4-6', detail: 'Retiro Reflejo.', rating: 1, category: 'Retiro' },
+      { date: 'Domingo 6', detail: 'Evangelístico y cena del Señor.', rating: 3, category: 'Evangelístico' },
+      { date: 'Domingo 6', detail: 'Aniversario Iglesia Reflejo CDMX.', rating: 3, category: 'Aniversario' },
+      { date: 'Domingo 13', detail: 'Aniversario Iglesia Reflejo Metepec.', rating: 3, category: 'Aniversario' },
+      { date: 'Miércoles 16', detail: 'Posada #1 Metepec.', rating: 2, category: 'Posada' },
+      { date: 'Viernes 18', detail: 'Posada #2 CDMX.', rating: 2, category: 'Posada' },
+      { date: '20', detail: 'Especial Navideño.', rating: 3, category: 'Navidad' },
+      { date: '24-25', detail: 'Navidad (CDMX).', rating: 3, category: 'Navidad' },
+      { date: '31', detail: 'Cena de Año Nuevo (Metepec).', rating: 3, category: 'Celebración' },
     ],
   },
 ];
@@ -216,26 +237,42 @@ const Events = () => {
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {filteredSchedule.map((month) => (
-            <article key={month.month} className="rounded-3xl border border-white/15 bg-slate-900/35 p-6 backdrop-blur-md">
-              <h3 className="text-xl font-semibold uppercase tracking-[0.12em] text-amber-200">{month.month}</h3>
+          {filteredSchedule.map((month) => {
+            const groupedEvents = month.events.reduce((acc, event) => {
+              const key = event.category || 'Otros';
+              acc[key] = acc[key] || [];
+              acc[key].push(event);
+              return acc;
+            }, {});
 
-              <ul className="mt-5 space-y-3">
-                {month.events.map((event) => (
-                  <li key={`${month.month}-${event.date}-${event.detail}`} className={`rounded-2xl border p-3 transition ${visibilityStyles[event.rating]}`}>
-                    <div className="flex items-start justify-between gap-3">
-                      <p className="text-sm font-semibold uppercase tracking-[0.08em]">{event.date}</p>
-                      <span className="inline-flex items-center gap-1 text-xs font-bold">
-                        <Star className="h-3.5 w-3.5" />
-                        {publicationLevels[event.rating].stars}
-                      </span>
+            return (
+              <article key={month.month} className="rounded-3xl border border-white/15 bg-slate-900/35 p-6 backdrop-blur-md">
+                <h3 className="text-xl font-semibold uppercase tracking-[0.12em] text-amber-200">{month.month}</h3>
+
+                <div className="mt-5 space-y-5">
+                  {Object.entries(groupedEvents).map(([category, events]) => (
+                    <div key={`${month.month}-${category}`}>
+                      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/70">{category}</p>
+                      <ul className="mt-3 space-y-3">
+                        {events.map((event) => (
+                          <li key={`${month.month}-${event.date}-${event.detail}`} className={`rounded-2xl border p-3 transition ${visibilityStyles[event.rating]}`}>
+                            <div className="flex items-start justify-between gap-3">
+                              <p className="text-sm font-semibold uppercase tracking-[0.08em]">{event.date}</p>
+                              <span className="inline-flex items-center gap-1 text-xs font-bold">
+                                <Star className="h-3.5 w-3.5" />
+                                {publicationLevels[event.rating].stars}
+                              </span>
+                            </div>
+                            <p className="mt-2 text-sm leading-relaxed">{event.detail}</p>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                    <p className="mt-2 text-sm leading-relaxed">{event.detail}</p>
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ))}
+                  ))}
+                </div>
+              </article>
+            );
+          })}
         </div>
 
         <div className="mt-8 flex items-center justify-center gap-2 text-xs text-slate-300/90">

@@ -32,9 +32,12 @@ const Header = () => {
 
   const toggleTheme = () => {
     const nextTheme = theme === 'light' ? 'dark' : 'light';
+    const root = document.documentElement;
+    root.classList.add('theme-transition');
+    window.setTimeout(() => root.classList.remove('theme-transition'), 350);
     setTheme(nextTheme);
     localStorage.setItem('theme', nextTheme);
-    document.documentElement.classList.toggle('dark', nextTheme === 'dark');
+    root.classList.toggle('dark', nextTheme === 'dark');
     window.dispatchEvent(new CustomEvent('theme-change', { detail: nextTheme }));
   };
 
@@ -90,14 +93,14 @@ const Header = () => {
       transition={{ duration: 0.6, ease: 'easeOut' }}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center transition-all duration-300 h-14">
+        <div className="flex justify-between items-center transition-all duration-300 h-16">
           {/* Logo */}
           <div className="flex items-center">
             <Link to="/" className="flex items-center gap-2 group">
               <motion.img 
                 src={RLogo} 
                 alt="Logo Reflejo" 
-                className="w-auto object-contain transition-all duration-300 h-14"
+                className="w-auto object-contain transition-all duration-300 h-16"
                 whileHover={{ scale: 1.05, rotate: [0, -5, 5, 0] }}
                 transition={{ duration: 0.4 }}
               />
@@ -209,10 +212,25 @@ const Header = () => {
             <button
               type="button"
               onClick={toggleTheme}
-              className="w-9 h-9 rounded-full border border-slate-300/70 dark:border-slate-600/70 bg-white/50 dark:bg-slate-800/70 text-slate-600 dark:text-slate-200 flex items-center justify-center"
               aria-label="Alternar tema"
+              aria-pressed={theme === 'dark'}
+              className="relative w-14 h-7 rounded-full border border-slate-200 bg-slate-100/80 text-slate-600 shadow-inner transition-colors dark:border-slate-700 dark:bg-slate-800/80"
             >
-              {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+              <span className="absolute left-1 top-1/2 -translate-y-1/2 text-amber-500/80">
+                <Sun size={12} />
+              </span>
+              <span className="absolute right-1 top-1/2 -translate-y-1/2 text-slate-400/80">
+                <Moon size={12} />
+              </span>
+              <span
+                className={`absolute top-0.5 left-0.5 h-6 w-6 rounded-full bg-white shadow-md flex items-center justify-center transition-transform duration-300 ${
+                  theme === 'dark'
+                    ? 'translate-x-7 bg-slate-900 text-amber-300'
+                    : 'translate-x-0 text-amber-500'
+                }`}
+              >
+                {theme === 'light' ? <Sun size={12} /> : <Moon size={12} />}
+              </span>
             </button>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button 
@@ -242,10 +260,25 @@ const Header = () => {
             <button
               type="button"
               onClick={toggleTheme}
-              className="w-8 h-8 rounded-full border border-slate-300/70 dark:border-slate-600/70 bg-white/50 dark:bg-slate-800/70 text-slate-600 dark:text-slate-200 flex items-center justify-center"
               aria-label="Alternar tema"
+              aria-pressed={theme === 'dark'}
+              className="relative w-12 h-6 rounded-full border border-slate-200 bg-slate-100/80 text-slate-600 shadow-inner transition-colors dark:border-slate-700 dark:bg-slate-800/80"
             >
-              {theme === 'light' ? <Moon size={14} /> : <Sun size={14} />}
+              <span className="absolute left-1 top-1/2 -translate-y-1/2 text-amber-500/80">
+                <Sun size={10} />
+              </span>
+              <span className="absolute right-1 top-1/2 -translate-y-1/2 text-slate-400/80">
+                <Moon size={10} />
+              </span>
+              <span
+                className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow-md flex items-center justify-center transition-transform duration-300 ${
+                  theme === 'dark'
+                    ? 'translate-x-6 bg-slate-900 text-amber-300'
+                    : 'translate-x-0 text-amber-500'
+                }`}
+              >
+                {theme === 'light' ? <Sun size={10} /> : <Moon size={10} />}
+              </span>
             </button>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button 

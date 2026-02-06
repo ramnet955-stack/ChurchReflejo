@@ -48,12 +48,12 @@ const About = () => {
   };
 
   return (
-    <section id="about" className="py-20 bg-white">
+    <section id="about" className="py-20 bg-white dark:bg-slate-950">
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Sobre Nosotros</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-slate-100 mb-4">Sobre Nosotros</h2>
           <div className="w-20 h-1 bg-secondary mx-auto rounded-full"></div>
-          <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+          <p className="mt-4 text-gray-600 dark:text-slate-300 max-w-2xl mx-auto">
             Somos una familia imperfecta sirviendo a un Dios perfecto.
           </p>
         </div>
@@ -70,6 +70,8 @@ const About = () => {
               sx={{
                 '& .MuiTabs-indicator': { backgroundColor: '#f59e0b' },
                 '& .Mui-selected': { color: '#f59e0b !important' },
+                '& .MuiTab-root': { color: 'text.secondary' },
+                '& .MuiTabs-scrollButtons': { color: 'text.secondary' },
               }}
             >
               <Tab label="Visión / Misión" className="font-sans font-bold" />
@@ -82,15 +84,15 @@ const About = () => {
           <TabPanel value={value} index={0}>
              <div className="grid md:grid-cols-2 gap-12 items-center">
                 <div className="space-y-6">
-                  <div className="bg-blue-50 p-6 rounded-lg border-l-4 border-primary">
+                  <div className="bg-blue-50 dark:bg-slate-900/70 p-6 rounded-lg border-l-4 border-primary">
                     <h3 className="text-2xl font-bold text-primary mb-3">Nuestra Misión</h3>
-                    <p className="text-gray-700 leading-relaxed">
+                    <p className="text-gray-700 dark:text-slate-200 leading-relaxed">
                       ¡Que el mundo vea a Jesús a través de nosotros!
                     </p>
                   </div>
-                  <div className="bg-amber-50 p-6 rounded-lg border-l-4 border-secondary">
+                  <div className="bg-amber-50 dark:bg-slate-900/70 p-6 rounded-lg border-l-4 border-secondary">
                     <h3 className="text-2xl font-bold text-secondary mb-3">Nuestra Visión</h3>
-                    <p className="text-gray-700 leading-relaxed">
+                    <p className="text-gray-700 dark:text-slate-200 leading-relaxed">
                       Ser una iglesia que transforma su comunidad mediante el amor de Dios, la enseñanza bíblica y el servicio activo.
                     </p>
                   </div>
@@ -110,39 +112,39 @@ const About = () => {
                   "El Bautismo y la Santa Cena",
                   "La Segunda Venida de Cristo"
                 ].map((item, idx) => (
-                  <div key={idx} className="p-6 bg-gray-50 rounded-lg text-center hover:bg-gray-100 transition-colors">
+                  <div key={idx} className="p-6 bg-gray-50 dark:bg-slate-900/60 rounded-lg text-center hover:bg-gray-100 dark:hover:bg-slate-800/70 transition-colors">
                     <div className="w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-4 font-bold text-xl">
                       {idx + 1}
                     </div>
-                    <h4 className="font-semibold text-gray-800">{item}</h4>
+                    <h4 className="font-semibold text-gray-800 dark:text-slate-100">{item}</h4>
                   </div>
                 ))}
              </div>
           </TabPanel>
           <TabPanel value={value} index={2}>
              <div className="max-w-4xl mx-auto text-center space-y-6">
-                <h3 className="text-2xl font-bold text-gray-900">Más de 20 años sirviendo</h3>
-                <p className="text-gray-600 leading-relaxed text-lg">
+                 <h3 className="text-2xl font-bold text-gray-900 dark:text-slate-100">Más de 20 años sirviendo</h3>
+                 <p className="text-gray-600 dark:text-slate-300 leading-relaxed text-lg">
                    Iglesia Bíblica Reflejo nació con el deseo de ser un faro de luz en la ciudad. 
                    Desde nuestros inicios, nuestra prioridad ha sido la enseñanza fiel de las Escrituras 
                    y el amor al prójimo.
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
-                   <div className="p-4 bg-slate-50 rounded-lg">
+                   <div className="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-lg">
                       <div className="text-3xl font-bold text-primary">2008</div>
-                      <div className="text-sm text-gray-500">Fundación</div>
+                     <div className="text-sm text-gray-500 dark:text-slate-400">Fundación</div>
                    </div>
-                   <div className="p-4 bg-slate-50 rounded-lg">
+                   <div className="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-lg">
                       <div className="text-3xl font-bold text-primary">500+</div>
-                      <div className="text-sm text-gray-500">Miembros</div>
+                     <div className="text-sm text-gray-500 dark:text-slate-400">Miembros</div>
                    </div>
-                   <div className="p-4 bg-slate-50 rounded-lg">
+                   <div className="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-lg">
                       <div className="text-3xl font-bold text-primary">2</div>
-                      <div className="text-sm text-gray-500">Sedes</div>
+                     <div className="text-sm text-gray-500 dark:text-slate-400">Sedes</div>
                    </div>
-                   <div className="p-4 bg-slate-50 rounded-lg">
+                   <div className="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-lg">
                       <div className="text-3xl font-bold text-primary">15</div>
-                      <div className="text-sm text-gray-500">Ministerios</div>
+                     <div className="text-sm text-gray-500 dark:text-slate-400">Ministerios</div>
                    </div>
                 </div>
              </div>
@@ -153,9 +155,9 @@ const About = () => {
                    <div className="relative overflow-hidden rounded-xl mb-4 aspect-square">
                      <img src={YoshimarImg} alt="Pastor Yoshimar Mora" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
                    </div>
-                   <h3 className="text-xl font-bold text-gray-900">Pastor</h3>
+                   <h3 className="text-xl font-bold text-gray-900 dark:text-slate-100">Pastor</h3>
                    <p className="text-primary font-medium">Yoshimar Mora (CDMX y Metepec)</p>
-                   <p className="text-sm text-gray-500 mt-2 px-4">Apasionado por la enseñanza expositiva de las Escrituras y el cuidado de las almas.</p>
+                   <p className="text-sm text-gray-500 dark:text-slate-400 mt-2 px-4">Apasionado por la enseñanza expositiva de las Escrituras y el cuidado de las almas.</p>
                 </div>
              </div>
           </TabPanel>
@@ -165,27 +167,27 @@ const About = () => {
                    <div className="relative overflow-hidden rounded-xl mb-4 aspect-square max-w-sm mx-auto">
                       <img src={JulioImg} alt="Líder Julio" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
                    </div>
-                   <h3 className="text-xl font-bold text-gray-900">Director de Ministerios</h3>
+                   <h3 className="text-xl font-bold text-gray-900 dark:text-slate-100">Director de Ministerios</h3>
                    <p className="text-primary font-medium">Julio (CDMX)</p>
-                   <p className="text-sm text-gray-500 mt-2 px-4">Coordinando los esfuerzos para que cada miembro encuentre su lugar de servicio.</p>
+                   <p className="text-sm text-gray-500 dark:text-slate-400 mt-2 px-4">Coordinando los esfuerzos para que cada miembro encuentre su lugar de servicio.</p>
                 </div>
 
                 <div className="text-center group">
                    <div className="relative overflow-hidden rounded-xl mb-4 aspect-square max-w-sm mx-auto">
                       <img src={EstebanImg} alt="Líder Esteban" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
                    </div>
-                   <h3 className="text-xl font-bold text-gray-900">Co-pastor</h3>
+                   <h3 className="text-xl font-bold text-gray-900 dark:text-slate-100">Co-pastor</h3>
                    <p className="text-primary font-medium">Esteban (CDMX y Metepec)</p>
-                   <p className="text-sm text-gray-500 mt-2 px-4">Sirviendo con fidelidad en el pastoreo y la enseñanza.</p>
+                   <p className="text-sm text-gray-500 dark:text-slate-400 mt-2 px-4">Sirviendo con fidelidad en el pastoreo y la enseñanza.</p>
                 </div>
 
                 <div className="text-center group">
                    <div className="relative overflow-hidden rounded-xl mb-4 aspect-square max-w-sm mx-auto">
                      <img src={YoshimarImg} alt="Líder Yoshimar" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
                    </div>
-                   <h3 className="text-xl font-bold text-gray-900">Pastor</h3>
+                   <h3 className="text-xl font-bold text-gray-900 dark:text-slate-100">Pastor</h3>
                    <p className="text-primary font-medium">Yoshimar Mora (CDMX y Metepec)</p>
-                   <p className="text-sm text-gray-500 mt-2 px-4">Liderando con visión y amor a la congregación.</p>
+                   <p className="text-sm text-gray-500 dark:text-slate-400 mt-2 px-4">Liderando con visión y amor a la congregación.</p>
                 </div>
              </div>
           </TabPanel>

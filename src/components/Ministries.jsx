@@ -75,7 +75,7 @@ const cardVariants = {
 
 const Ministries = () => {
   return (
-    <section id="ministries" className="py-24 bg-gradient-to-b from-white via-gray-50/50 to-white overflow-hidden">
+    <section id="ministries" className="py-24 bg-gradient-to-b from-white via-gray-50/50 to-white dark:from-slate-950 dark:via-slate-900/40 dark:to-slate-950 overflow-hidden">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <motion.div 
@@ -86,7 +86,7 @@ const Ministries = () => {
           transition={{ duration: 0.6 }}
         >
           <motion.span 
-            className="inline-block px-4 py-1.5 bg-secondary/10 text-secondary font-semibold text-sm rounded-full mb-4"
+            className="inline-block px-4 py-1.5 bg-secondary/10 dark:bg-secondary/20 text-secondary font-semibold text-sm rounded-full mb-4"
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -94,7 +94,7 @@ const Ministries = () => {
           >
             Comunidad
           </motion.span>
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">Nuestros Ministerios</h2>
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-slate-100 mb-4">Nuestros Ministerios</h2>
           <motion.div 
             className="w-20 h-1 bg-secondary mx-auto rounded-full"
             initial={{ scaleX: 0 }}
@@ -102,7 +102,7 @@ const Ministries = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.3, duration: 0.6 }}
           />
-          <p className="mt-6 text-gray-600 max-w-2xl mx-auto text-lg">
+          <p className="mt-6 text-gray-600 dark:text-slate-300 max-w-2xl mx-auto text-lg">
             Hay un lugar para ti en nuestra familia, donde puedes servir y ser edificado.
           </p>
         </motion.div>
@@ -235,15 +235,15 @@ const Ministries = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
         >
-          <p className="text-gray-500 mb-4">¿No encuentras tu lugar?</p>
+          <p className="text-gray-500 dark:text-slate-400 mb-4">¿No encuentras tu lugar?</p>
           <Button
             component={Link}
             to="/ubicacion"
             variant="outlined"
             size="large"
             sx={{
-              borderColor: '#1e3a8a',
-              color: '#1e3a8a',
+              borderColor: (theme) => theme.palette.mode === 'dark' ? '#93c5fd' : '#1e3a8a',
+              color: (theme) => theme.palette.mode === 'dark' ? '#bfdbfe' : '#1e3a8a',
               borderWidth: 2,
               borderRadius: '9999px',
               px: 4,
@@ -252,7 +252,7 @@ const Ministries = () => {
               fontWeight: 600,
               '&:hover': {
                 borderWidth: 2,
-                backgroundColor: '#1e3a8a',
+                backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#2563eb' : '#1e3a8a',
                 color: 'white'
               }
             }}

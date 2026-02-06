@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, BookOpen, Shield, Heart, Sun, Users, LifeBuoy, CheckCircle } from 'lucide-react';
 

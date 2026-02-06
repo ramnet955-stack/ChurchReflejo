@@ -82,7 +82,7 @@ const steps = [
   },
 ];
 
-const HexagonSlice = ({ step, index, isActive, onClick, onHover, onLeave }) => {
+const HexagonSlice = ({ step, index, isActive, isLocked, onClick, onHover, onLeave }) => {
   const groupRef = useRef(null);
   
   const center = { x: 250, y: 250 };
@@ -155,7 +155,7 @@ const HexagonSlice = ({ step, index, isActive, onClick, onHover, onLeave }) => {
       onMouseEnter={() => onHover && onHover(step)}
       onMouseLeave={() => onLeave && onLeave()}
       className="cursor-pointer group select-none"
-      style={{ transformOrigin: '250px 250px' }}
+      style={{ transformOrigin: '250px 250px', pointerEvents: isLocked ? 'none' : 'auto' }}
     >
       <defs>
         {/* Máscara de recorte */}
@@ -255,6 +255,7 @@ const Discipleship = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [showAllCards, setShowAllCards] = useState(false);
   const [hoveredStep, setHoveredStep] = useState(null);
+  const hoverTimer = useRef(null);
 
   // Auto-Carousel
   useEffect(() => {
@@ -271,71 +272,86 @@ const Discipleship = () => {
     return () => clearInterval(interval);
   }, [activeStep, isPaused]);
 
+  useEffect(() => () => window.clearTimeout(hoverTimer.current), []);
+
+  const handleHover = (step) => {
+    window.clearTimeout(hoverTimer.current);
+    hoverTimer.current = window.setTimeout(() => {
+      setHoveredStep(step);
+      setIsPaused(true);
+    }, 80);
+  };
+
+  const handleLeave = () => {
+    window.clearTimeout(hoverTimer.current);
+    hoverTimer.current = window.setTimeout(() => {
+      setHoveredStep(null);
+      setIsPaused(false);
+    }, 120);
+  };
+
   const displayStep = hoveredStep || activeStep;
   const displayIndex = steps.findIndex((s) => s.id === displayStep.id);
   const angle = (displayIndex * 60) - 60;
   const connectorX = 250 + 240 * Math.cos((angle * Math.PI) / 180);
   const connectorY = 250 + 240 * Math.sin((angle * Math.PI) / 180);
+  const leftSteps = [steps[5], steps[4], steps[3]];
+  const rightSteps = [steps[0], steps[1], steps[2]];
 
   return (
-    <section className="py-14 bg-gradient-to-br from-slate-50 to-white dark:from-slate-950 dark:to-slate-900 flex flex-col items-center justify-center relative font-sans overflow-hidden">
+    <section className="py-10 bg-white text-slate-800 dark:bg-slate-950 dark:text-slate-100 flex flex-col items-center justify-center relative font-sans overflow-hidden">
       
       {/* Fondo decorativo sutil */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-30" />
-        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-amber-100 rounded-full blur-3xl opacity-30" />
+        <div className="absolute -top-24 left-1/3 w-[28rem] h-[28rem] rounded-full bg-gradient-to-br from-white via-slate-50 to-slate-100 blur-3xl opacity-80 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900" />
+        <div className="absolute -bottom-24 right-1/3 w-[26rem] h-[26rem] rounded-full bg-gradient-to-tr from-white via-slate-50 to-slate-100 blur-3xl opacity-70 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900" />
       </div>
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-slate-100 tracking-tight uppercase">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white tracking-tight uppercase">
             TU CAMINO EN <span className="text-blue-600">REFLEJO</span>
           </h2>
-          <p className="text-gray-500 dark:text-slate-300 mt-2 text-base">Descubre los 6 pasos hacia una vida transformada</p>
+          <p className="text-slate-500 dark:text-slate-300 mt-2 text-sm">Descubre los 6 pasos hacia una vida transformada</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-6 lg:gap-10">
           <div className="order-2 lg:order-1 w-full">
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-              {steps.slice(0, 3).map((step) => {
-                const isExpanded = showAllCards || hoveredStep?.id === step.id || activeStep.id === step.id;
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+              {leftSteps.map((step) => {
+                const isExpanded = showAllCards || hoveredStep?.id === step.id;
+                const isHighlighted = hoveredStep?.id === step.id || activeStep.id === step.id;
 
                 return (
                   <div
                     key={step.id}
                     onClick={() => setActiveStep(step)}
-                    onMouseEnter={() => {
-                      setIsPaused(true);
-                      setHoveredStep(step);
-                    }}
-                    onMouseLeave={() => {
-                      setIsPaused(false);
-                      setHoveredStep(null);
-                    }}
-                    className={`rounded-2xl border border-white/60 dark:border-slate-700/70 bg-white/70 dark:bg-slate-900/60 backdrop-blur-lg p-4 transition-all shadow-[0_10px_30px_rgba(0,0,0,0.08)] ${isExpanded ? 'scale-[1.01]' : ''}`}
+                    onMouseEnter={() => handleHover(step)}
+                    onMouseLeave={handleLeave}
+                    className={`rounded-2xl border bg-white/90 dark:bg-slate-900/70 backdrop-blur-lg p-3 transition-all shadow-[0_10px_26px_rgba(15,23,42,0.08)] ${isExpanded ? 'scale-[1.01]' : ''} ${isHighlighted ? 'border-slate-200 ring-1 ring-slate-200 dark:border-slate-700 dark:ring-slate-700/60' : 'border-slate-100 dark:border-slate-800'}`}
                   >
                     <div className="flex items-center justify-between gap-3">
                       <div>
                         <p className="text-[11px] uppercase tracking-widest text-slate-400">Paso {step.id}</p>
-                        <h3 className="text-lg font-black text-slate-900 dark:text-white" style={{ color: step.color }}>
+                        <h3 className="text-base font-black text-slate-900 dark:text-white" style={{ color: step.color }}>
                           {step.title}
                         </h3>
-                        <p className="text-sm text-slate-600 dark:text-slate-300">{step.subtitle}</p>
+                        <p className="text-xs text-slate-600 dark:text-slate-300">{step.subtitle}</p>
                       </div>
                       <div
-                        className="w-12 h-12 rounded-xl flex items-center justify-center text-white shadow-md"
+                        className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-md"
                         style={{ backgroundColor: step.color }}
                       >
-                        {React.createElement(step.icon, { size: 20, strokeWidth: 2.4 })}
+                        {React.createElement(step.icon, { size: 18, strokeWidth: 2.4 })}
                       </div>
                     </div>
 
                     {isExpanded && (
-                      <div className="mt-3 text-sm text-slate-600 dark:text-slate-300">
-                        <p className="leading-relaxed">{step.desc}</p>
+                      <div className="mt-2 text-xs text-slate-600 dark:text-slate-300">
+                        <p className="leading-snug">{step.desc}</p>
                         <Link
                           to={`/discipulado/${step.id}`}
-                          className="mt-3 inline-flex items-center gap-2 font-semibold"
+                          className="mt-2 inline-flex items-center gap-2 font-semibold"
                           style={{ color: step.color }}
                         >
                           Ver Comportamientos <span aria-hidden="true">→</span>
@@ -350,11 +366,11 @@ const Discipleship = () => {
           
           {/* --- SVG HEXÁGONO --- */}
           <div 
-            className="order-1 lg:order-2 relative w-[360px] h-[360px] md:w-[460px] md:h-[460px] flex-shrink-0 select-none"
+            className="order-1 lg:order-2 relative w-[300px] h-[300px] md:w-[400px] md:h-[400px] flex-shrink-0 select-none"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
-            <svg viewBox="0 0 500 500" className="w-full h-full overflow-visible drop-shadow-2xl">
+            <svg viewBox="0 0 500 500" className="w-full h-full overflow-visible drop-shadow-[0_30px_60px_rgba(15,23,42,0.18)]">
               <defs>
                 {/* Gradiente de brillo */}
                 <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
@@ -381,15 +397,10 @@ const Discipleship = () => {
                   step={step}
                   index={index}
                   isActive={activeStep.id === step.id}
+                  isLocked={showAllCards}
                   onClick={setActiveStep}
-                  onHover={(nextStep) => {
-                    setIsPaused(true);
-                    setHoveredStep(nextStep);
-                  }}
-                  onLeave={() => {
-                    setIsPaused(false);
-                    setHoveredStep(null);
-                  }}
+                  onHover={handleHover}
+                  onLeave={handleLeave}
                 />
               ))}
 
@@ -409,19 +420,35 @@ const Discipleship = () => {
               <g
                 style={{ transformOrigin: '250px 250px' }}
                 filter="url(#centerShadow)"
-                onMouseEnter={() => setShowAllCards(true)}
-                onMouseLeave={() => setShowAllCards(false)}
               >
+                <circle
+                  cx="250"
+                  cy="250"
+                  r="120"
+                  fill="transparent"
+                  pointerEvents="all"
+                  onMouseEnter={() => {
+                    setShowAllCards(true);
+                    setHoveredStep(null);
+                    setIsPaused(true);
+                  }}
+                  onMouseLeave={() => {
+                    setShowAllCards(false);
+                    setIsPaused(false);
+                  }}
+                />
                 <polygon 
                   points="250,155 332,197 332,302 250,345 168,302 168,197" 
                   fill="white"
                   transform="rotate(0, 250, 250)" 
+                  pointerEvents="none"
                 />
                 <polygon 
                   points="250,155 332,197 332,302 250,345 168,302 168,197" 
                   fill="url(#gloss)"
                   style={{ mixBlendMode: 'overlay', opacity: 0.5 }}
                   transform="rotate(0, 250, 250)" 
+                  pointerEvents="none"
                 />
                 
                 <image 
@@ -430,7 +457,7 @@ const Discipleship = () => {
                   y="205" 
                   height="90" 
                   width="90" 
-                  style={{ opacity: 0.95 }}
+                  style={{ opacity: 0.95, pointerEvents: 'none' }}
                 />
               </g>
             </svg>
@@ -466,46 +493,41 @@ const Discipleship = () => {
             </div>
           </div>
           <div className="order-3 lg:order-3 w-full">
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-              {steps.slice(3, 6).map((step) => {
-                const isExpanded = showAllCards || hoveredStep?.id === step.id || activeStep.id === step.id;
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+              {rightSteps.map((step) => {
+                const isExpanded = showAllCards || hoveredStep?.id === step.id;
+                const isHighlighted = hoveredStep?.id === step.id || activeStep.id === step.id;
 
                 return (
                   <div
                     key={step.id}
                     onClick={() => setActiveStep(step)}
-                    onMouseEnter={() => {
-                      setIsPaused(true);
-                      setHoveredStep(step);
-                    }}
-                    onMouseLeave={() => {
-                      setIsPaused(false);
-                      setHoveredStep(null);
-                    }}
-                    className={`rounded-2xl border border-white/60 dark:border-slate-700/70 bg-white/70 dark:bg-slate-900/60 backdrop-blur-lg p-4 transition-all shadow-[0_10px_30px_rgba(0,0,0,0.08)] ${isExpanded ? 'scale-[1.01]' : ''}`}
+                    onMouseEnter={() => handleHover(step)}
+                    onMouseLeave={handleLeave}
+                    className={`rounded-2xl border bg-white/90 dark:bg-slate-900/70 backdrop-blur-lg p-3 transition-all shadow-[0_10px_26px_rgba(15,23,42,0.08)] ${isExpanded ? 'scale-[1.01]' : ''} ${isHighlighted ? 'border-slate-200 ring-1 ring-slate-200 dark:border-slate-700 dark:ring-slate-700/60' : 'border-slate-100 dark:border-slate-800'}`}
                   >
                     <div className="flex items-center justify-between gap-3">
                       <div>
                         <p className="text-[11px] uppercase tracking-widest text-slate-400">Paso {step.id}</p>
-                        <h3 className="text-lg font-black text-slate-900 dark:text-white" style={{ color: step.color }}>
+                        <h3 className="text-base font-black text-slate-900 dark:text-white" style={{ color: step.color }}>
                           {step.title}
                         </h3>
-                        <p className="text-sm text-slate-600 dark:text-slate-300">{step.subtitle}</p>
+                        <p className="text-xs text-slate-600 dark:text-slate-300">{step.subtitle}</p>
                       </div>
                       <div
-                        className="w-12 h-12 rounded-xl flex items-center justify-center text-white shadow-md"
+                        className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-md"
                         style={{ backgroundColor: step.color }}
                       >
-                        {React.createElement(step.icon, { size: 20, strokeWidth: 2.4 })}
+                        {React.createElement(step.icon, { size: 18, strokeWidth: 2.4 })}
                       </div>
                     </div>
 
                     {isExpanded && (
-                      <div className="mt-3 text-sm text-slate-600 dark:text-slate-300">
-                        <p className="leading-relaxed">{step.desc}</p>
+                      <div className="mt-2 text-xs text-slate-600 dark:text-slate-300">
+                        <p className="leading-snug">{step.desc}</p>
                         <Link
                           to={`/discipulado/${step.id}`}
-                          className="mt-3 inline-flex items-center gap-2 font-semibold"
+                          className="mt-2 inline-flex items-center gap-2 font-semibold"
                           style={{ color: step.color }}
                         >
                           Ver Comportamientos <span aria-hidden="true">→</span>
