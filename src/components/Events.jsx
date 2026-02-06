@@ -45,21 +45,21 @@ const recurrentEvents = getSundays(2026).flatMap((date, index) => {
 });
 
 const specialEvents = [
-  { id: 2, title: 'Noche de Adoración', date: '2026-01-24', time: '07:00 PM', location: 'Sede CdMx', quarter: 1, type: 'Especial' },
-  { id: 3, title: 'Retiro de Jóvenes', date: '2026-02-14', time: 'All Day', location: 'Centro de Retiros', quarter: 1, type: 'Campamento' },
+  { id: 2, title: 'Retiro de Enero', date: '2026-01-17', time: 'All Day', location: 'Centro de Retiros', quarter: 1, type: 'Campamento' },
+  { id: 3, title: 'Noche de Adoración', date: '2026-01-24', time: '07:00 PM', location: 'Sede CdMx', quarter: 1, type: 'Especial' },
+
   { id: 4, title: 'Conferencia de Matrimonios', date: '2026-03-20', time: '06:00 PM', location: 'Hotel Radisson', quarter: 1, type: 'Conferencia' },
   { id: 5, title: 'Día de la Familia', date: '2026-04-15', time: '11:00 AM', location: 'Parque Bicentenario', quarter: 2, type: 'Comunidad' },
   { id: 6, title: 'Cena de Acción de Gracias', date: '2026-11-26', time: '08:00 PM', location: 'Sede Metepec', quarter: 4, type: 'Celebración' },
 ];
 
-const events = [...recurrentEvents, ...specialEvents].sort((a, b) => new Date(a.date) - new Date(b.date));
+const events = [...recurrentEvents, ...specialEvents].filter((event) => event.quarter <= 3).sort((a, b) => new Date(a.date) - new Date(b.date));
 
 const filters = [
   { value: 'all', label: 'Todo el año' },
   { value: '1', label: '1er trimestre' },
   { value: '2', label: '2º trimestre' },
   { value: '3', label: '3er trimestre' },
-  { value: '4', label: '4º trimestre' },
 ];
 
 const Events = () => {
@@ -106,7 +106,7 @@ const Events = () => {
               Calendario de Eventos <span className="text-amber-300">2026</span>
             </h2>
             <p className="mt-4 max-w-xl text-slate-200/80 text-base md:text-lg">
-              Planea tu próximo paso y acompáñanos en cada momento clave de nuestra familia REFLEJO. Actualizamos esta agenda cada trimestre para que no te pierdas nada.
+              Planea tu próximo paso y acompáñanos en cada momento clave de nuestra familia REFLEJO. Actualizamos esta agenda por 3 trimestres para que no te pierdas nada.
             </p>
           </div>
 
