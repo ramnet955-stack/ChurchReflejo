@@ -2,7 +2,7 @@ import React from 'react';
 import { Facebook, Instagram, Youtube, Mail, Phone, MapPin, Heart, ArrowUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import RLogo from '../assets/logo.webp';
+import RLogo from '../assets/logo.png';
 
 const Footer = () => {
   const scrollToTop = () => {

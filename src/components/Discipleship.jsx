@@ -5,7 +5,7 @@ import { BookOpen, Shield, Heart, Sun, Users, LifeBuoy } from 'lucide-react';
 import anime from 'animejs';
 
 // Assets
-import RLogo from '../assets/logo.webp';
+import RLogo from '../assets/logo.png';
 import ReconocerImg from '../assets/Reconocer.webp';
 import RefugiarseImg from '../assets/refugiarse.webp';
 import RestaurarImg from '../assets/Restaurar.webp';

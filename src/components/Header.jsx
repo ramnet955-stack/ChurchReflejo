@@ -4,7 +4,7 @@ import { Button, Menu, MenuItem } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import RLogo from '../assets/Rlogo.webp';
+import RLogo from '../assets/logo.png';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
