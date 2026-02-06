@@ -92,7 +92,6 @@ const Footer = () => {
                 { name: 'Ministerios', href: '/ministerios' },
                 { name: 'Visítanos', href: '/ubicacion' },
                 { name: 'Donar', href: '/donar', highlight: true },
-                { name: 'Plataforma', href: '/login' },
               ].map((link) => (
                 <li key={link.name}>
                   <Link 

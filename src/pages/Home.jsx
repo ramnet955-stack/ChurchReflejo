@@ -4,8 +4,6 @@ import Header from '../components/Header';
 import Hero from '../components/Hero';
 import Footer from '../components/Footer';
 import About from '../components/About';
-import Discipleship from '../components/Discipleship';
-import Events from '../components/Events';
 
 const Home = () => {
   return (
@@ -20,8 +18,6 @@ const Home = () => {
       <Header />
       <Hero />
       <About />
-      <Discipleship />
-      <Events />
       <Footer />
     </>
   );
