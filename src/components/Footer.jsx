@@ -92,7 +92,6 @@ const Footer = () => {
                 { name: 'Ministerios', href: '/ministerios' },
                 { name: 'Visítanos', href: '/ubicacion' },
                 { name: 'Donar', href: '/donar', highlight: true },
-                { name: 'Plataforma', href: '/login' },
               ].map((link) => (
                 <li key={link.name}>
                   <Link 
@@ -116,7 +115,7 @@ const Footer = () => {
           {/* Contact Info */}
           <div className="space-y-4">
             <h4 className="text-white font-bold text-sm uppercase tracking-wider">Contacto</h4>
-            <div className="space-y-4">
+            <div className="space-y-2">
               <a 
                 href="tel:+527291219121" 
                 className="flex items-center gap-3 text-slate-400 hover:text-secondary transition-colors group"

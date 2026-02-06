@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from 'react-hot-toast';
@@ -91,16 +91,20 @@ const PageTransition = ({ children }) => (
   </motion.div>
 );
 
-// Configuración de tema MUI
-const theme = createTheme({
+// Tema helper
+const buildTheme = (mode) => createTheme({
   palette: {
+    mode,
     primary: { main: '#1e3a8a' },
     secondary: { main: '#f59e0b' },
     warning: { main: '#f59e0b' },
-    background: { default: '#f9fafb' }
+    background: { default: mode === 'dark' ? '#020617' : '#f9fafb' }
   },
   typography: {
     fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+    fontWeightRegular: 300,
+    fontWeightMedium: 400,
+    fontWeightBold: 600,
   },
   components: {
     MuiButton: {
@@ -108,7 +112,7 @@ const theme = createTheme({
         root: {
           textTransform: 'none',
           borderRadius: '12px',
-          fontWeight: 600,
+          fontWeight: 500,
         }
       }
     },
@@ -170,6 +174,16 @@ Sentry.init({
 });
 
 function App() {
+  const [mode, setMode] = useState(() => localStorage.getItem('theme') || 'light');
+
+  useEffect(() => {
+    const onThemeChange = (event) => setMode(event.detail || localStorage.getItem('theme') || 'light');
+    window.addEventListener('theme-change', onThemeChange);
+    return () => window.removeEventListener('theme-change', onThemeChange);
+  }, []);
+
+  const theme = useMemo(() => buildTheme(mode), [mode]);
+
   return (
     <ErrorBoundary>
       <HelmetProvider>
@@ -197,7 +211,7 @@ function App() {
             />
             <Suspense fallback={<LoadingSpinner />}>
               <AnimatePresence mode="wait">
-                <div className="min-h-screen bg-gray-50 text-gray-800 font-sans selection:bg-amber-200">
+                <div className="min-h-screen bg-gray-50 text-gray-800 dark:bg-slate-950 dark:text-slate-100 font-sans selection:bg-amber-200">
                    <Routes>
                       <Route path="/" element={<Home />} />
                       <Route path="/nosotros" element={<AboutPage />} />

@@ -151,10 +151,10 @@ const About = () => {
              <div className="flex justify-center">
                 <div className="text-center group max-w-sm">
                    <div className="relative overflow-hidden rounded-xl mb-4 aspect-square">
-                     <img src={YoshimarImg} alt="Pastor Yoshhimar Mora" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+                     <img src={YoshimarImg} alt="Pastor Yoshimar Mora" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
                    </div>
                    <h3 className="text-xl font-bold text-gray-900">Pastor</h3>
-                   <p className="text-primary font-medium">Yoshhimar Mora (CDMX y Metepec)</p>
+                   <p className="text-primary font-medium">Yoshimar Mora (CDMX y Metepec)</p>
                    <p className="text-sm text-gray-500 mt-2 px-4">Apasionado por la enseñanza expositiva de las Escrituras y el cuidado de las almas.</p>
                 </div>
              </div>
@@ -181,10 +181,10 @@ const About = () => {
 
                 <div className="text-center group">
                    <div className="relative overflow-hidden rounded-xl mb-4 aspect-square max-w-sm mx-auto">
-                     <img src={YoshimarImg} alt="Líder Yoshhimar" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+                     <img src={YoshimarImg} alt="Líder Yoshimar" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
                    </div>
                    <h3 className="text-xl font-bold text-gray-900">Pastor</h3>
-                   <p className="text-primary font-medium">Yoshhimar Mora (CDMX y Metepec)</p>
+                   <p className="text-primary font-medium">Yoshimar Mora (CDMX y Metepec)</p>
                    <p className="text-sm text-gray-500 mt-2 px-4">Liderando con visión y amor a la congregación.</p>
                 </div>
              </div>

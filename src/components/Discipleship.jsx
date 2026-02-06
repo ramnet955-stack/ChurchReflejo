@@ -96,7 +96,7 @@ const HexagonSlice = ({ step, index, isActive, onClick, onHover, onLeave }) => {
   const startAngle = (index * 60) + angleOffset;
   const endAngle = ((index + 1) * 60) + angleOffset;
   
-  const skew = 20; 
+  const skew = 0; 
 
   // Puntos del trapezoide
   const x1_out = center.x + outerRadius * Math.cos(toRad(startAngle));
@@ -254,6 +254,7 @@ const HexagonSlice = ({ step, index, isActive, onClick, onHover, onLeave }) => {
 const Discipleship = () => {
   const [activeStep, setActiveStep] = useState(steps[0]);
   const [isPaused, setIsPaused] = useState(false);
+  const [showAllCards, setShowAllCards] = useState(false);
 
   // Auto-Carousel
   useEffect(() => {
@@ -282,8 +283,13 @@ const Discipleship = () => {
     setActiveStep(steps[prevI]);
   };
 
+  const activeIndex = steps.findIndex((s) => s.id === activeStep.id);
+  const angle = (activeIndex * 60) - 60;
+  const connectorX = 250 + 240 * Math.cos((angle * Math.PI) / 180);
+  const connectorY = 250 + 240 * Math.sin((angle * Math.PI) / 180);
+
   return (
-    <section className="py-20 bg-gradient-to-br from-slate-50 to-white min-h-screen flex flex-col items-center justify-center relative font-sans overflow-hidden">
+    <section className="py-14 bg-gradient-to-br from-slate-50 to-white dark:from-slate-950 dark:to-slate-900 flex flex-col items-center justify-center relative font-sans overflow-hidden">
       
       {/* Fondo decorativo sutil */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -293,17 +299,17 @@ const Discipleship = () => {
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-black text-gray-800 tracking-tight uppercase">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-slate-100 tracking-tight uppercase">
             TU CAMINO EN <span className="text-blue-600">REFLEJO</span>
           </h2>
-          <p className="text-gray-500 mt-3 text-lg">Descubre los 6 pasos hacia una vida transformada</p>
+          <p className="text-gray-500 dark:text-slate-300 mt-2 text-base">Descubre los 6 pasos hacia una vida transformada</p>
         </div>
 
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-20">
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
           
           {/* --- SVG HEXÁGONO --- */}
           <div 
-            className="relative w-[380px] h-[380px] md:w-[500px] md:h-[500px] flex-shrink-0 select-none"
+            className="relative w-[360px] h-[360px] md:w-[460px] md:h-[460px] flex-shrink-0 select-none"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
@@ -339,19 +345,35 @@ const Discipleship = () => {
                   onLeave={() => setIsPaused(false)}
                 />
               ))}
+
+              <line
+                x1="250"
+                y1="250"
+                x2={connectorX}
+                y2={connectorY}
+                stroke={activeStep.color}
+                strokeWidth="3"
+                strokeDasharray="10 8"
+                opacity="0.8"
+              />
               
               {/* CENTRO BLANCO */}
-              <g style={{ transformOrigin: '250px 250px' }} filter="url(#centerShadow)">
+              <g
+                style={{ transformOrigin: '250px 250px' }}
+                filter="url(#centerShadow)"
+                onMouseEnter={() => setShowAllCards(true)}
+                onMouseLeave={() => setShowAllCards(false)}
+              >
                 <polygon 
                   points="250,155 332,197 332,302 250,345 168,302 168,197" 
                   fill="white"
-                  transform="rotate(20, 250, 250)" 
+                  transform="rotate(0, 250, 250)" 
                 />
                 <polygon 
                   points="250,155 332,197 332,302 250,345 168,302 168,197" 
                   fill="url(#gloss)"
                   style={{ mixBlendMode: 'overlay', opacity: 0.5 }}
-                  transform="rotate(20, 250, 250)" 
+                  transform="rotate(0, 250, 250)" 
                 />
                 
                 <image 
@@ -404,13 +426,32 @@ const Discipleship = () => {
           >
             <AnimatePresence mode="wait">
               <motion.div
-                key={activeStep?.id}
+                key={showAllCards ? 'all-cards' : activeStep?.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                className="bg-white rounded-3xl p-8 border border-gray-100 shadow-[0_20px_60px_rgba(0,0,0,0.1)] relative overflow-hidden"
+                transition={{ duration: 0.35, ease: "easeOut" }}
+                className="bg-white/70 backdrop-blur-lg dark:bg-slate-900/60 rounded-3xl p-6 border border-gray-100 dark:border-slate-700 shadow-[0_20px_60px_rgba(0,0,0,0.1)] relative overflow-hidden"
               >
+                {showAllCards ? (
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    {steps.map((step) => (
+                      <button
+                        key={step.id}
+                        onClick={() => {
+                          setActiveStep(step);
+                          setShowAllCards(false);
+                        }}
+                        className="text-left rounded-xl border border-white/40 dark:border-slate-700 p-3 bg-white/70 dark:bg-slate-800/60 hover:scale-[1.01] transition"
+                      >
+                        <p className="text-xs uppercase tracking-wider text-slate-500">Paso {step.id}</p>
+                        <p className="font-semibold" style={{ color: step.color }}>{step.title}</p>
+                        <p className="text-xs text-slate-600 dark:text-slate-300">{step.subtitle}</p>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <>
                 {/* Barra de color superior */}
                 <motion.div 
                   className="absolute top-0 left-0 w-full h-1.5"
@@ -475,6 +516,8 @@ const Discipleship = () => {
                   className="absolute -bottom-20 -right-20 w-48 h-48 rounded-full opacity-5"
                   style={{ backgroundColor: activeStep.color }}
                 />
+                  </>
+                )}
               </motion.div>
             </AnimatePresence>
             

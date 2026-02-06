@@ -107,23 +107,15 @@ const Hero = () => {
 
         <motion.h1 
           variants={itemVariants}
-          className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 drop-shadow-2xl"
+          className="text-4xl md:text-6xl lg:text-7xl font-semibold tracking-tight mb-5 drop-shadow-2xl"
         >
           Iglesia Bíblica{' '}
-          <span className="relative">
-            <span className="text-secondary">REFLEJO</span>
-            <motion.span 
-              className="absolute -bottom-2 left-0 w-full h-1 bg-secondary rounded-full"
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ delay: 1.2, duration: 0.8, ease: 'easeOut' }}
-            />
-          </span>
+          <span className="text-secondary">REFLEJO</span>
         </motion.h1>
         
         <motion.p 
           variants={itemVariants}
-          className="text-xl md:text-2xl lg:text-3xl font-light max-w-3xl mx-auto opacity-90 leading-relaxed mb-10"
+          className="text-lg md:text-2xl lg:text-[2rem] font-extralight max-w-3xl mx-auto opacity-90 leading-snug mb-9"
         >
           ¡Que el mundo vea a <span className="font-semibold text-secondary">Jesús</span> a través de nosotros!
         </motion.p>
@@ -142,7 +134,7 @@ const Hero = () => {
               endIcon={<ChevronRight className="group-hover:translate-x-1 transition-transform" />}
               className="btn-shine"
               sx={{
-                backgroundColor: '#f59e0b',
+                backgroundColor: 'rgba(245, 158, 11, 0.85)',
                 fontSize: '1.1rem',
                 py: 1.75,
                 px: 5,
@@ -177,7 +169,7 @@ const Hero = () => {
                 textTransform: 'none',
                 fontWeight: 600,
                 backdropFilter: 'blur(10px)',
-                backgroundColor: 'rgba(255,255,255,0.05)',
+                backgroundColor: 'rgba(255,255,255,0.08)',
                 '&:hover': { 
                   borderColor: '#fbbf24',
                   color: '#fbbf24',
@@ -194,16 +186,17 @@ const Hero = () => {
         {/* Stats row */}
         <motion.div 
           variants={itemVariants}
-          className="flex justify-center gap-8 md:gap-16 mt-16 pt-8 border-t border-white/10"
+          className="flex flex-wrap justify-center gap-4 md:gap-6 mt-12"
         >
           {[
             { value: '500+', label: 'Miembros' },
             { value: '2', label: 'Sedes' },
             { value: '15+', label: 'Años' }
           ].map((stat, idx) => (
-            <div key={idx} className="text-center">
-              <div className="text-2xl md:text-3xl font-bold text-secondary">{stat.value}</div>
-              <div className="text-sm text-white/70">{stat.label}</div>
+            <div key={idx} className="text-center px-5 py-3 rounded-xl bg-white/15 backdrop-blur-md border border-white/20">
+              <div className="text-xs text-secondary">•</div>
+              <div className="text-2xl md:text-3xl font-semibold text-secondary">{stat.value}</div>
+              <div className="text-xs tracking-wide text-white/80">{stat.label}</div>
             </div>
           ))}
         </motion.div>
