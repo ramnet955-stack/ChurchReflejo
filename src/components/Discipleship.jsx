@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { BookOpen, Shield, Heart, Sun, Users, LifeBuoy } from 'lucide-react';
 import anime from 'animejs';
@@ -153,8 +152,8 @@ const HexagonSlice = ({ step, index, isActive, onClick, onHover, onLeave }) => {
     <g 
       ref={groupRef}
       onClick={() => onClick(step)}
-      onMouseEnter={() => onHover && onHover(true)}
-      onMouseLeave={() => onLeave && onLeave(true)}
+      onMouseEnter={() => onHover && onHover(step)}
+      onMouseLeave={() => onLeave && onLeave()}
       className="cursor-pointer group select-none"
       style={{ transformOrigin: '250px 250px' }}
     >
@@ -255,6 +254,7 @@ const Discipleship = () => {
   const [activeStep, setActiveStep] = useState(steps[0]);
   const [isPaused, setIsPaused] = useState(false);
   const [showAllCards, setShowAllCards] = useState(false);
+  const [hoveredStep, setHoveredStep] = useState(null);
 
   // Auto-Carousel
   useEffect(() => {
@@ -271,20 +271,9 @@ const Discipleship = () => {
     return () => clearInterval(interval);
   }, [activeStep, isPaused]);
 
-  const handleNext = () => {
-    const currentIndex = steps.findIndex(s => s.id === activeStep.id);
-    const nextI = (currentIndex + 1) % steps.length;
-    setActiveStep(steps[nextI]);
-  };
-
-  const handlePrev = () => {
-    const currentIndex = steps.findIndex(s => s.id === activeStep.id);
-    const prevI = (currentIndex - 1 + steps.length) % steps.length;
-    setActiveStep(steps[prevI]);
-  };
-
-  const activeIndex = steps.findIndex((s) => s.id === activeStep.id);
-  const angle = (activeIndex * 60) - 60;
+  const displayStep = hoveredStep || activeStep;
+  const displayIndex = steps.findIndex((s) => s.id === displayStep.id);
+  const angle = (displayIndex * 60) - 60;
   const connectorX = 250 + 240 * Math.cos((angle * Math.PI) / 180);
   const connectorY = 250 + 240 * Math.sin((angle * Math.PI) / 180);
 
@@ -305,11 +294,63 @@ const Discipleship = () => {
           <p className="text-gray-500 dark:text-slate-300 mt-2 text-base">Descubre los 6 pasos hacia una vida transformada</p>
         </div>
 
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-8 lg:gap-12">
+          <div className="order-2 lg:order-1 w-full">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+              {steps.slice(0, 3).map((step) => {
+                const isExpanded = showAllCards || hoveredStep?.id === step.id || activeStep.id === step.id;
+
+                return (
+                  <div
+                    key={step.id}
+                    onClick={() => setActiveStep(step)}
+                    onMouseEnter={() => {
+                      setIsPaused(true);
+                      setHoveredStep(step);
+                    }}
+                    onMouseLeave={() => {
+                      setIsPaused(false);
+                      setHoveredStep(null);
+                    }}
+                    className={`rounded-2xl border border-white/60 dark:border-slate-700/70 bg-white/70 dark:bg-slate-900/60 backdrop-blur-lg p-4 transition-all shadow-[0_10px_30px_rgba(0,0,0,0.08)] ${isExpanded ? 'scale-[1.01]' : ''}`}
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <p className="text-[11px] uppercase tracking-widest text-slate-400">Paso {step.id}</p>
+                        <h3 className="text-lg font-black text-slate-900 dark:text-white" style={{ color: step.color }}>
+                          {step.title}
+                        </h3>
+                        <p className="text-sm text-slate-600 dark:text-slate-300">{step.subtitle}</p>
+                      </div>
+                      <div
+                        className="w-12 h-12 rounded-xl flex items-center justify-center text-white shadow-md"
+                        style={{ backgroundColor: step.color }}
+                      >
+                        {React.createElement(step.icon, { size: 20, strokeWidth: 2.4 })}
+                      </div>
+                    </div>
+
+                    {isExpanded && (
+                      <div className="mt-3 text-sm text-slate-600 dark:text-slate-300">
+                        <p className="leading-relaxed">{step.desc}</p>
+                        <Link
+                          to={`/discipulado/${step.id}`}
+                          className="mt-3 inline-flex items-center gap-2 font-semibold"
+                          style={{ color: step.color }}
+                        >
+                          Ver Comportamientos <span aria-hidden="true">→</span>
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
           
           {/* --- SVG HEXÁGONO --- */}
           <div 
-            className="relative w-[360px] h-[360px] md:w-[460px] md:h-[460px] flex-shrink-0 select-none"
+            className="order-1 lg:order-2 relative w-[360px] h-[360px] md:w-[460px] md:h-[460px] flex-shrink-0 select-none"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
@@ -341,8 +382,14 @@ const Discipleship = () => {
                   index={index}
                   isActive={activeStep.id === step.id}
                   onClick={setActiveStep}
-                  onHover={() => setIsPaused(true)}
-                  onLeave={() => setIsPaused(false)}
+                  onHover={(nextStep) => {
+                    setIsPaused(true);
+                    setHoveredStep(nextStep);
+                  }}
+                  onLeave={() => {
+                    setIsPaused(false);
+                    setHoveredStep(null);
+                  }}
                 />
               ))}
 
@@ -351,10 +398,11 @@ const Discipleship = () => {
                 y1="250"
                 x2={connectorX}
                 y2={connectorY}
-                stroke={activeStep.color}
-                strokeWidth="3"
+                stroke={displayStep.color}
+                strokeWidth={hoveredStep ? 4 : 3}
                 strokeDasharray="10 8"
-                opacity="0.8"
+                opacity={showAllCards ? 0.35 : hoveredStep ? 1 : 0.8}
+                className="transition-all duration-300"
               />
               
               {/* CENTRO BLANCO */}
@@ -417,123 +465,56 @@ const Discipleship = () => {
               })}
             </div>
           </div>
+          <div className="order-3 lg:order-3 w-full">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+              {steps.slice(3, 6).map((step) => {
+                const isExpanded = showAllCards || hoveredStep?.id === step.id || activeStep.id === step.id;
 
-          {/* --- INFO CARD --- */}
-          <div 
-            className="w-full max-w-[450px] relative"
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={showAllCards ? 'all-cards' : activeStep?.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.35, ease: "easeOut" }}
-                className="bg-white/70 backdrop-blur-lg dark:bg-slate-900/60 rounded-3xl p-6 border border-gray-100 dark:border-slate-700 shadow-[0_20px_60px_rgba(0,0,0,0.1)] relative overflow-hidden"
-              >
-                {showAllCards ? (
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    {steps.map((step) => (
-                      <button
-                        key={step.id}
-                        onClick={() => {
-                          setActiveStep(step);
-                          setShowAllCards(false);
-                        }}
-                        className="text-left rounded-xl border border-white/40 dark:border-slate-700 p-3 bg-white/70 dark:bg-slate-800/60 hover:scale-[1.01] transition"
+                return (
+                  <div
+                    key={step.id}
+                    onClick={() => setActiveStep(step)}
+                    onMouseEnter={() => {
+                      setIsPaused(true);
+                      setHoveredStep(step);
+                    }}
+                    onMouseLeave={() => {
+                      setIsPaused(false);
+                      setHoveredStep(null);
+                    }}
+                    className={`rounded-2xl border border-white/60 dark:border-slate-700/70 bg-white/70 dark:bg-slate-900/60 backdrop-blur-lg p-4 transition-all shadow-[0_10px_30px_rgba(0,0,0,0.08)] ${isExpanded ? 'scale-[1.01]' : ''}`}
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <p className="text-[11px] uppercase tracking-widest text-slate-400">Paso {step.id}</p>
+                        <h3 className="text-lg font-black text-slate-900 dark:text-white" style={{ color: step.color }}>
+                          {step.title}
+                        </h3>
+                        <p className="text-sm text-slate-600 dark:text-slate-300">{step.subtitle}</p>
+                      </div>
+                      <div
+                        className="w-12 h-12 rounded-xl flex items-center justify-center text-white shadow-md"
+                        style={{ backgroundColor: step.color }}
                       >
-                        <p className="text-xs uppercase tracking-wider text-slate-500">Paso {step.id}</p>
-                        <p className="font-semibold" style={{ color: step.color }}>{step.title}</p>
-                        <p className="text-xs text-slate-600 dark:text-slate-300">{step.subtitle}</p>
-                      </button>
-                    ))}
+                        {React.createElement(step.icon, { size: 20, strokeWidth: 2.4 })}
+                      </div>
+                    </div>
+
+                    {isExpanded && (
+                      <div className="mt-3 text-sm text-slate-600 dark:text-slate-300">
+                        <p className="leading-relaxed">{step.desc}</p>
+                        <Link
+                          to={`/discipulado/${step.id}`}
+                          className="mt-3 inline-flex items-center gap-2 font-semibold"
+                          style={{ color: step.color }}
+                        >
+                          Ver Comportamientos <span aria-hidden="true">→</span>
+                        </Link>
+                      </div>
+                    )}
                   </div>
-                ) : (
-                  <>
-                {/* Barra de color superior */}
-                <motion.div 
-                  className="absolute top-0 left-0 w-full h-1.5"
-                  style={{ backgroundColor: activeStep.color }}
-                  layoutId="colorBar"
-                />
-                
-                {/* Navegación */}
-                <div className="absolute top-6 right-6 flex gap-2 z-20">
-                  <button 
-                    onClick={handlePrev} 
-                    className="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-all hover:scale-105 active:scale-95"
-                  >
-                    ←
-                  </button>
-                  <button 
-                    onClick={handleNext} 
-                    className="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-all hover:scale-105 active:scale-95"
-                  >
-                    →
-                  </button>
-                </div>
-                
-                {/* Contador */}
-                <div className="absolute top-8 right-28 font-mono text-xs text-slate-400 font-bold tracking-widest">
-                  {String(steps.findIndex(s => s.id === activeStep.id) + 1).padStart(2, '0')} / {String(steps.length).padStart(2, '0')}
-                </div>
-
-                {/* Icono */}
-                <motion.div 
-                  className="w-16 h-16 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg"
-                  style={{ backgroundColor: activeStep.color }}
-                  whileHover={{ scale: 1.05, rotate: 5 }}
-                  transition={{ type: "spring", stiffness: 400 }}
-                >
-                  {React.createElement(activeStep.icon, { size: 28, strokeWidth: 2.5 })}
-                </motion.div>
-
-                <h3 className="text-3xl font-black text-gray-900 mb-2">
-                  {activeStep.title}
-                </h3>
-                
-                <p className={`font-bold text-lg mb-4 ${activeStep.textColor}`}>
-                  {activeStep.subtitle}
-                </p>
-
-                <p className="text-gray-500 leading-relaxed mb-8">
-                  {activeStep.desc}
-                </p>
-
-                <Link 
-                  to={`/discipulado/${activeStep.id}`}
-                  className="flex items-center justify-between w-full py-4 px-6 rounded-xl text-white font-bold transition-all group shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
-                  style={{ backgroundColor: activeStep.color }}
-                >
-                  <span>Ver Comportamientos</span>
-                  <span className="text-white/70 group-hover:text-white group-hover:translate-x-1 transition-all">→</span>
-                </Link>
-                
-                {/* Decoración de fondo */}
-                <div 
-                  className="absolute -bottom-20 -right-20 w-48 h-48 rounded-full opacity-5"
-                  style={{ backgroundColor: activeStep.color }}
-                />
-                  </>
-                )}
-              </motion.div>
-            </AnimatePresence>
-            
-            {/* Progress dots mobile */}
-            <div className="flex justify-center gap-2 mt-8 lg:hidden">
-              {steps.map((s) => (
-                <button 
-                  key={s.id}
-                  onClick={() => setActiveStep(s)}
-                  className={`rounded-full transition-all duration-300 h-2 ${
-                    activeStep.id === s.id ? 'w-8' : 'w-2 bg-gray-300 hover:bg-gray-400'
-                  }`}
-                  style={{ backgroundColor: activeStep.id === s.id ? s.color : undefined }}
-                  aria-label={`Ir a ${s.title}`}
-                />
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
