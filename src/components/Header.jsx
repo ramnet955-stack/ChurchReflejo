@@ -42,7 +42,7 @@ const Header = () => {
   };
 
   const navItems = [
-    { name: 'Nosotros', href: '/nosotros', dropdown: true },
+    { name: 'Nosotros', href: '/?tab=0', dropdown: true },
     { name: 'Recorrido Discipulado', href: '/discipulado' },
     { name: 'Iglesia', href: '/ministerios' },
     { name: 'Eventos', href: '/eventos' },
@@ -50,26 +50,28 @@ const Header = () => {
   ];
 
   const aboutLinks = [
-    { name: 'Visión / Misión', href: '/nosotros?tab=0' },
-    { name: 'En esto creemos', href: '/nosotros?tab=1' },
-    { name: 'Nuestra Historia', href: '/nosotros?tab=2' },
-    { name: 'Nuestro Pastor', href: '/nosotros?tab=3' },
-    { name: 'Nuestros Líderes', href: '/nosotros?tab=4' },
+    { name: 'Visión / Misión', href: '/?tab=0' },
+    { name: 'En esto creemos', href: '/?tab=1' },
+    { name: 'Nuestro Pastor', href: '/?tab=2' },
+    { name: 'Nuestros Líderes', href: '/?tab=3' },
   ];
 
   const isActive = (href) => {
-    if (href === '/nosotros') return location.pathname.startsWith('/nosotros');
+    // For 'Nosotros', check if we are on home and tab param is present OR if path starts with /nosotros (backward compat)
+    if (href.startsWith('/?tab=')) {
+      return location.pathname === '/' && location.search.includes(href.split('?')[1]);
+    }
     return location.pathname === href;
   };
 
   // Mobile menu animation variants
   const mobileMenuVariants = {
-    hidden: { 
+    hidden: {
       opacity: 0,
       height: 0,
       transition: { duration: 0.3, ease: 'easeInOut' }
     },
-    visible: { 
+    visible: {
       opacity: 1,
       height: 'auto',
       transition: { duration: 0.3, ease: 'easeInOut' }
@@ -86,21 +88,21 @@ const Header = () => {
   };
 
   return (
-    <motion.header 
+    <motion.header
       className="fixed top-0 w-full z-50 transition-all duration-500"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center transition-all duration-300 h-16">
+        <div className="flex justify-between items-center transition-all duration-300 h-24">
           {/* Logo */}
           <div className="flex items-center">
             <Link to="/" className="flex items-center gap-2 group">
-              <motion.img 
-                src={RLogo} 
-                alt="Logo Reflejo" 
-                className="w-auto object-contain transition-all duration-300 h-16"
+              <motion.img
+                src={RLogo}
+                alt="Logo Reflejo"
+                className="w-auto object-contain transition-all duration-300 h-24"
                 whileHover={{ scale: 1.05, rotate: [0, -5, 5, 0] }}
                 transition={{ duration: 0.4 }}
               />
@@ -114,11 +116,10 @@ const Header = () => {
                 <div key={item.name} className="relative group">
                   <button
                     onClick={handleClick}
-                    className={`flex items-center gap-1 px-3 py-1.5 rounded-full font-normal text-sm lg:text-[15px] transition-all duration-300 ${
-                      isActive(item.href)
-                        ? 'text-primary bg-primary/10'
-                        : 'text-gray-600 dark:text-slate-300 hover:text-primary hover:bg-white/60 dark:hover:bg-slate-800/70'
-                    }`}
+                    className={`flex items-center gap-1 px-3 py-1.5 rounded-full font-normal text-sm lg:text-[15px] transition-all duration-300 ${isActive(item.href)
+                      ? 'text-primary bg-primary/10'
+                      : 'text-gray-600 dark:text-slate-300 hover:text-primary hover:bg-white/60 dark:hover:bg-slate-800/70'
+                      }`}
                   >
                     {item.name}
                     <motion.span
@@ -159,13 +160,13 @@ const Header = () => {
                     }}
                   >
                     {aboutLinks.map((link, idx) => (
-                      <MenuItem 
-                        key={link.name} 
-                        component={Link} 
-                        to={link.href} 
+                      <MenuItem
+                        key={link.name}
+                        component={Link}
+                        to={link.href}
                         onClick={handleClose}
-                        sx={{ 
-                          fontSize: '14px', 
+                        sx={{
+                          fontSize: '14px',
                           fontWeight: 500,
                           py: 1.5,
                           px: 3,
@@ -173,9 +174,9 @@ const Header = () => {
                           mx: 1,
                           my: 0.5,
                           transition: 'all 0.2s',
-                          '&:hover': { 
-                            backgroundColor: '#fef3c7', 
-                            color: '#1e3a8a' 
+                          '&:hover': {
+                            backgroundColor: '#fef3c7',
+                            color: '#1e3a8a'
                           }
                         }}
                       >
@@ -188,11 +189,10 @@ const Header = () => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`relative px-3 py-1.5 rounded-full font-normal text-sm lg:text-[15px] transition-all duration-300 ${
-                    isActive(item.href)
-                      ? 'text-primary bg-primary/10'
-                      : 'text-gray-600 dark:text-slate-300 hover:text-primary hover:bg-white/60 dark:hover:bg-slate-800/70'
-                  }`}
+                  className={`relative px-3 py-1.5 rounded-full font-normal text-sm lg:text-[15px] transition-all duration-300 ${isActive(item.href)
+                    ? 'text-primary bg-primary/10'
+                    : 'text-gray-600 dark:text-slate-300 hover:text-primary hover:bg-white/60 dark:hover:bg-slate-800/70'
+                    }`}
                 >
                   {item.name}
                   {isActive(item.href) && (
@@ -223,24 +223,23 @@ const Header = () => {
                 <Moon size={12} />
               </span>
               <span
-                className={`absolute top-0.5 left-0.5 h-6 w-6 rounded-full bg-white shadow-md flex items-center justify-center transition-transform duration-300 ${
-                  theme === 'dark'
-                    ? 'translate-x-7 bg-slate-900 text-amber-300'
-                    : 'translate-x-0 text-amber-500'
-                }`}
+                className={`absolute top-0.5 left-0.5 h-6 w-6 rounded-full bg-white shadow-md flex items-center justify-center transition-transform duration-300 ${theme === 'dark'
+                  ? 'translate-x-7 bg-slate-900 text-amber-300'
+                  : 'translate-x-0 text-amber-500'
+                  }`}
               >
                 {theme === 'light' ? <Sun size={12} /> : <Moon size={12} />}
               </span>
             </button>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button 
+              <Button
                 component={Link}
                 to="/donar"
-                variant="contained" 
+                variant="contained"
                 color="warning"
                 className="btn-shine"
-                sx={{ 
-                  backgroundColor: '#f59e0b', 
+                sx={{
+                  backgroundColor: '#f59e0b',
                   '&:hover': { backgroundColor: '#d97706' },
                   color: 'white',
                   fontWeight: 600,
@@ -271,23 +270,22 @@ const Header = () => {
                 <Moon size={10} />
               </span>
               <span
-                className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow-md flex items-center justify-center transition-transform duration-300 ${
-                  theme === 'dark'
-                    ? 'translate-x-6 bg-slate-900 text-amber-300'
-                    : 'translate-x-0 text-amber-500'
-                }`}
+                className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow-md flex items-center justify-center transition-transform duration-300 ${theme === 'dark'
+                  ? 'translate-x-6 bg-slate-900 text-amber-300'
+                  : 'translate-x-0 text-amber-500'
+                  }`}
               >
                 {theme === 'light' ? <Sun size={10} /> : <Moon size={10} />}
               </span>
             </button>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button 
+              <Button
                 component={Link}
                 to="/donar"
-                variant="contained" 
+                variant="contained"
                 size="small"
-                sx={{ 
-                  backgroundColor: '#f59e0b', 
+                sx={{
+                  backgroundColor: '#f59e0b',
                   '&:hover': { backgroundColor: '#d97706' },
                   color: 'white',
                   minWidth: 'auto',
@@ -335,7 +333,7 @@ const Header = () => {
       {/* Mobile Navigation */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
+          <motion.div
             className="md:hidden bg-white border-t border-gray-100 overflow-hidden"
             variants={mobileMenuVariants}
             initial="hidden"
@@ -353,11 +351,10 @@ const Header = () => {
                   >
                     <Link
                       to={item.href}
-                      className={`block px-4 py-3 text-base font-medium rounded-xl transition-all duration-300 ${
-                        isActive(item.href)
-                          ? 'text-primary bg-primary/5'
-                          : 'text-gray-700 hover:text-primary hover:bg-gray-50'
-                      }`}
+                      className={`block px-4 py-3 text-base font-medium rounded-xl transition-all duration-300 ${isActive(item.href)
+                        ? 'text-primary bg-primary/5'
+                        : 'text-gray-700 hover:text-primary hover:bg-gray-50'
+                        }`}
                       onClick={() => setIsOpen(false)}
                     >
                       {item.name}

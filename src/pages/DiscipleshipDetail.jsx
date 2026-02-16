@@ -3,12 +3,20 @@ import { motion } from 'framer-motion';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, BookOpen, Shield, Heart, Sun, Users, LifeBuoy, CheckCircle } from 'lucide-react';
 
+// Assets
+import ReconocerImg from '../assets/a (1).jpeg';
+import RefugiarseImg from '../assets/a (3).jpeg';
+import RestaurarImg from '../assets/a (2).jpeg';
+import RenovarImg from '../assets/a (4).jpeg';
+import RelacionarImg from '../assets/a (5).jpeg';
+import RescatarImg from '../assets/a (6).jpeg';
+
 const stepsData = {
   1: {
     title: 'Reconócelo',
     icon: BookOpen,
-    color: '#2563eb',
-    accentColor: 'bg-blue-600',
+    img: ReconocerImg,
+    color: '#fbbf24', // Amber
     description: 'Reconoce a Jesús como tu Señor y Salvador.',
     content: `
       El inicio del viaje empieza con la fe. Reconocer que necesitamos a Jesús es el primer paso para una vida transformada.
@@ -26,8 +34,8 @@ const stepsData = {
   2: {
     title: 'Refúgiate',
     icon: Shield,
-    color: '#3b82f6',
-    accentColor: 'bg-blue-500',
+    img: RefugiarseImg,
+    color: '#16a34a', // Green
     description: 'Encuentra seguridad en la comunidad.',
     content: `
       La iglesia es tu refugio seguro. Aquí encontrarás protección, apoyo y una familia que te ama.
@@ -44,8 +52,8 @@ const stepsData = {
   3: {
     title: 'Restáurate',
     icon: Heart,
-    color: '#60a5fa',
-    accentColor: 'bg-blue-400',
+    img: RestaurarImg,
+    color: '#ec4899', // Pink
     description: 'Permite que Dios sane tus heridas.',
     content: `
       Dios es experto en sanar corazones rotos. En este paso trabajamos en la sanidad interior y el perdón.
@@ -63,8 +71,8 @@ const stepsData = {
   4: {
     title: 'Renuévate',
     icon: Sun,
-    color: '#fbbf24',
-    accentColor: 'bg-amber-400',
+    img: RenovarImg,
+    color: '#2563eb', // Blue
     description: 'Transforma tu mente y tus hábitos.',
     content: `
       Aprende a pensar como Jesús. La renovación de la mente es clave para cambiar nuestra forma de vivir.
@@ -82,8 +90,8 @@ const stepsData = {
   5: {
     title: 'Relaciónate',
     icon: Users,
-    color: '#f59e0b',
-    accentColor: 'bg-amber-500',
+    img: RelacionarImg,
+    color: '#f97316', // Orange
     description: 'Conecta con otros creyentes.',
     content: `
       No fuimos creados para estar solos. Construye amistades significativas que te impulsen a crecer.
@@ -101,8 +109,8 @@ const stepsData = {
   6: {
     title: 'Rescátalos',
     icon: LifeBuoy,
-    color: '#d97706',
-    accentColor: 'bg-amber-600',
+    img: RescatarImg,
+    color: '#dc2626', // Red
     description: 'Comparte el mensaje de esperanza.',
     content: `
       Tu historia puede cambiar la vida de alguien más. Aprende a compartir tu fe con valentía.
@@ -115,7 +123,7 @@ const stepsData = {
       - Hacer discípulos.
     `,
     verses: ['Mateo 28:19-20', 'Hechos 1:8', 'Marcos 16:15'],
-    nextStep: 1 // Cycle restarts or implies leadership
+    nextStep: 1
   }
 };
 
@@ -129,103 +137,121 @@ const DiscipleshipDetail = () => {
   return (
     <div className="min-h-screen bg-slate-50 overflow-hidden relative">
       {/* Dynamic Background Header */}
-      <div className={`h-[40vh] ${step.accentColor} relative flex items-center justify-center overflow-hidden`}>
-          <div className="absolute inset-0 bg-black/20 mix-blend-multiply"></div>
-          {/* Abstract Pattern */}
-          <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at center, white 2px, transparent 2px)', backgroundSize: '30px 30px' }}></div>
-          
-          <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
-          <div className="absolute -top-32 -left-32 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+      <div
+        className="relative flex items-center justify-center overflow-hidden"
+        style={{ backgroundColor: step.color, minHeight: '25vh' }}
+      >
+        {/* Image Background */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src={step.img}
+            alt=""
+            className="w-full h-full object-cover opacity-30 mix-blend-overlay"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+        </div>
 
-          <div className="container mx-auto px-4 relative z-10 text-center text-white">
-              <Link to="/" className="absolute top-[-80px] left-4 md:left-0 text-white/80 hover:text-white flex items-center gap-2 font-bold transition-colors">
-                  <ArrowLeft size={24} /> Regresar
-              </Link>
-              
-              <motion.div 
-                 initial={{ opacity: 0, scale: 0.8 }}
-                 animate={{ opacity: 1, scale: 1 }}
-                 className="inline-flex p-6 bg-white/10 backdrop-blur-md rounded-full border border-white/20 mb-6 shadow-2xl"
-              >
-                  <step.icon size={64} strokeWidth={1.5} />
-              </motion.div>
-              <motion.h1 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-5xl md:text-7xl font-black tracking-tight mb-4"
-            >
-                {step.title}
-            </motion.h1>
-              <p className="text-xl md:text-2xl text-white/90 font-medium max-w-2xl mx-auto">{step.description}</p>
-          </div>
+        <div className="absolute inset-0 bg-black/20 mix-blend-multiply z-0"></div>
+        {/* Abstract Pattern */}
+        <div className="absolute inset-0 opacity-20 z-0" style={{ backgroundImage: 'radial-gradient(circle at center, white 2px, transparent 2px)', backgroundSize: '30px 30px' }}></div>
+
+        <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-white/10 rounded-full blur-3xl z-0"></div>
+        <div className="absolute -top-32 -left-32 w-96 h-96 bg-white/10 rounded-full blur-3xl z-0"></div>
+
+        <div className="container mx-auto px-4 relative z-10 text-center text-white py-6">
+          <Link to="/" className="absolute top-4 left-4 md:left-8 text-white/80 hover:text-white flex items-center gap-2 font-bold transition-colors">
+            <ArrowLeft size={24} /> Regresar
+          </Link>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="inline-flex p-1 bg-white/20 backdrop-blur-md rounded-full border border-white/20 mb-2 shadow-xl relative overflow-hidden group"
+          >
+            <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-4 border-white/30 bg-white/10">
+              <img
+                src={step.img}
+                alt={step.title}
+                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+              />
+            </div>
+          </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-3xl md:text-5xl font-black tracking-tight mb-1"
+          >
+            {step.title}
+          </motion.h1>
+          <p className="text-sm md:text-base text-white/90 font-medium max-w-2xl mx-auto">{step.description}</p>
+        </div>
       </div>
 
-      <div className="container mx-auto px-4 py-16 max-w-4xl relative z-10 -mt-20">
-          <div className="bg-white rounded-[2.5rem] p-8 md:p-14 shadow-xl border border-slate-100">
-             <div className="grid md:grid-cols-[2fr_1fr] gap-12">
-                 <div>
-                    <h2 className="text-3xl font-bold text-slate-800 mb-6">En detalle</h2>
-                    <div className="text-slate-600 text-lg leading-relaxed whitespace-pre-line mb-8">
-                        {step.content}
-                    </div>
+      <div className="container mx-auto px-4 pb-8 max-w-5xl relative z-10 -mt-6 md:-mt-10">
+        <div className="bg-white rounded-2xl p-5 md:p-8 shadow-xl border border-slate-100">
+          <div className="grid md:grid-cols-[2fr_1fr] gap-6 md:gap-8">
+            <div>
+              <h2 className="text-xl md:text-2xl font-bold text-slate-800 mb-2">En detalle</h2>
+              <div className="text-slate-600 text-sm md:text-base leading-relaxed whitespace-pre-line mb-4">
+                {step.content}
+              </div>
 
-                    <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-                        <BookOpen size={20} className="text-slate-400" />
-                        Versículos Clave
-                    </h3>
-                    <div className="flex flex-wrap gap-3 mb-8">
-                        {step.verses.map((verse, idx) => (
-                            <span key={idx} className="px-4 py-2 bg-slate-100 text-slate-700 font-semibold rounded-lg text-sm">
-                                {verse}
-                            </span>
-                        ))}
-                    </div>
-                 </div>
+              <h3 className="text-base font-bold text-slate-800 mb-2 flex items-center gap-2">
+                <BookOpen size={18} className="text-slate-400" />
+                Versículos Clave
+              </h3>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {step.verses.map((verse, idx) => (
+                  <span key={idx} className="px-3 py-1.5 bg-slate-100 text-slate-700 font-semibold rounded-lg text-sm">
+                    {verse}
+                  </span>
+                ))}
+              </div>
+            </div>
 
-                 {/* Sidebar / Actions */}
-                 <div className="flex flex-col gap-6">
-                    <div className="bg-slate-50 p-6 rounded-3xl border border-slate-100">
-                        <h4 className="font-bold text-slate-900 mb-4">¿Listo para comenzar?</h4>
-                        <button className={`w-full py-3 ${step.accentColor} text-white rounded-xl font-bold shadow-lg hover:brightness-110 transition-all mb-3`}>
-                            Inscribirme al curso
-                        </button>
-                        <button className="w-full py-3 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold hover:bg-slate-50 transition-all">
-                            Descargar material
-                        </button>
-                    </div>
-
-                    <div className="bg-blue-50/50 p-6 rounded-3xl border border-blue-100">
-                        <h4 className="font-bold text-blue-900 mb-4">Tu progreso</h4>
-                        <div className="flex items-center gap-3 mb-2">
-                            <CheckCircle className="text-blue-500" size={24} />
-                            <span className="text-sm text-blue-800 font-medium">Este es el paso {stepId} de 6</span>
-                        </div>
-                        <div className="w-full bg-blue-200 h-2 rounded-full overflow-hidden">
-                            <div className="bg-blue-600 h-full rounded-full" style={{ width: `${(stepId/6)*100}%` }}></div>
-                        </div>
-                    </div>
-                 </div>
-             </div>
-          </div>
-          
-          {/* Navigation between steps */}
-          <div className="flex justify-between mt-12">
-                {stepId > 1 ? (
-                    <Link to={`/discipulado/${stepId - 1}`} className="flex items-center gap-3 text-slate-500 hover:text-slate-900 font-bold px-6 py-3 bg-white rounded-full shadow-sm hover:shadow-md transition-all">
-                        <ArrowLeft size={18} /> Anterior
-                    </Link>
-                ) : <div></div>}
-                
-                 {stepId < 6 ? (
-                    <Link to={`/discipulado/${stepId + 1}`} className="flex items-center gap-3 text-white font-bold px-8 py-3 bg-slate-900 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
-                         Siguiente Paso <ArrowLeft size={18} className="rotate-180" />
-                    </Link>
+            {/* Sidebar / Actions */}
+            <div className="flex flex-col gap-4">
+              {/* Navigation Buttons (Moved Up) */}
+              <div className="flex flex-col gap-3">
+                {stepId < 6 ? (
+                  <Link to={`/discipulado/${stepId + 1}`}
+                    className="flex items-center justify-center gap-2 text-white font-bold px-5 py-3 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all text-sm w-full group"
+                    style={{ backgroundColor: step.color }}
+                  >
+                    Siguiente Paso <ArrowLeft size={20} className="rotate-180 group-hover:translate-x-1 transition-transform" />
+                  </Link>
                 ) : (
-                    <Link to="/" className="flex items-center gap-3 text-white font-bold px-8 py-3 bg-slate-900 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
-                         Completar Ciclo <CheckCircle size={18} />
-                    </Link>
+                  <Link to="/"
+                    className="flex items-center justify-center gap-2 text-white font-bold px-5 py-3 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all text-sm w-full group"
+                    style={{ backgroundColor: step.color }}
+                  >
+                    Completar Ciclo <CheckCircle size={20} />
+                  </Link>
                 )}
+
+                {stepId > 1 && (
+                  <Link to={`/discipulado/${stepId - 1}`} className="flex items-center justify-center gap-2 text-slate-500 hover:text-slate-800 font-bold px-5 py-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all text-sm w-full">
+                    <ArrowLeft size={20} /> Anterior
+                  </Link>
+                )}
+              </div>
+
+              <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                <h4 className="font-bold text-slate-900 mb-2 text-sm">Tu progreso</h4>
+                <div className="flex items-center gap-2 mb-2">
+                  <CheckCircle size={20} style={{ color: step.color }} />
+                  <span className="text-sm text-slate-600 font-medium">Este es el paso {stepId} de 6</span>
+                </div>
+                <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-1000"
+                    style={{ width: `${(stepId / 6) * 100}%`, backgroundColor: step.color }}
+                  ></div>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
       </div>
     </div>
   );

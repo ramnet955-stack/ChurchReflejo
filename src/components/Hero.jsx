@@ -1,17 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Button } from '@mui/material';
-import { ChevronRight, ChevronDown } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import Video1 from '../assets/BANNER/a (1).mp4';
 
 const Hero = () => {
   const [scrollY, setScrollY] = useState(0);
+  const [uptime, setUptime] = useState({ months: 0, days: 0, hours: 0 });
+  const startDate = useMemo(() => new Date('2025-12-25T00:00:00'), []);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    const tick = () => {
+      const now = new Date();
+      const diffMs = now - startDate;
+      const totalDays = Math.floor(diffMs / 86400000);
+      const months = Math.max(0, Math.floor(totalDays / 30));
+      const days = Math.max(0, totalDays % 30);
+      const hours = Math.max(0, Math.floor((diffMs % 86400000) / 3600000));
+      setUptime({ months, days, hours });
+    };
+    tick();
+    const id = setInterval(tick, 60 * 60 * 1000);
+    return () => clearInterval(id);
+  }, [startDate]);
 
   // Animation variants
   const containerVariants = {
@@ -24,8 +42,8 @@ const Hero = () => {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }
     }
@@ -33,12 +51,12 @@ const Hero = () => {
 
   const buttonVariants = {
     hidden: { opacity: 0, scale: 0.8 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       scale: 1,
       transition: { duration: 0.5, ease: 'easeOut' }
     },
-    hover: { 
+    hover: {
       scale: 1.05,
       transition: { duration: 0.2 }
     },
@@ -46,25 +64,36 @@ const Hero = () => {
   };
 
   return (
-    <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image with Parallax */}
-      <div className="absolute inset-0 z-0">
-        <motion.img
-          src="https://images.unsplash.com/photo-1438232992991-995b7058bbb3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
-          alt="Congregación adorando"
+    <section id="home" className="relative min-h-[70vh] md:min-h-[78vh] py-10 md:py-12 flex items-center justify-center overflow-hidden">
+      {/* Background Video with Parallax */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <motion.video
+          key="video-bg"
+          src={Video1}
+          autoPlay
+          muted
+          loop
+          playsInline
           className="w-full h-full object-cover"
-          style={{ transform: `translateY(${scrollY * 0.3}px) scale(1.1)` }}
-          initial={{ scale: 1.2, opacity: 0 }}
-          animate={{ scale: 1.1, opacity: 1 }}
-          transition={{ duration: 1.5, ease: 'easeOut' }}
-        />
-        {/* Gradient Overlay with animated opacity */}
-        <motion.div 
-          className="absolute inset-0 bg-gradient-to-t from-primary-DEFAULT/95 via-primary-dark/70 to-primary-dark/40"
+          style={{
+            transform: `translateY(${scrollY * 0.25}px) scale(1.05)`, // Keep consistent parallax
+            objectPosition: 'center'
+          }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 1.5 }}
         />
+        {/* Gradient Overlay with animated opacity (más oscuro + tinte naranja) */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-t from-primary-DEFAULT/92 via-primary-dark/72 to-primary-dark/42"
+          initial={{ opacity: 0.9 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        />
+        {/* Overlay ámbar para calidez */}
+        <div className="absolute inset-0 bg-gradient-to-br from-secondary/28 via-transparent to-transparent mix-blend-multiply" />
+        {/* Spotlight radial */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(255,255,255,0.14),transparent_48%)]" />
         {/* Subtle animated particles/grain effect */}
         <div className="absolute inset-0 opacity-[0.03] bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E')]" />
       </div>
@@ -72,7 +101,7 @@ const Hero = () => {
       {/* Floating decorative elements */}
       <motion.div
         className="absolute top-1/4 left-10 w-64 h-64 bg-secondary/10 rounded-full blur-3xl"
-        animate={{ 
+        animate={{
           x: [0, 30, 0],
           y: [0, -20, 0],
           scale: [1, 1.1, 1]
@@ -81,7 +110,7 @@ const Hero = () => {
       />
       <motion.div
         className="absolute bottom-1/4 right-10 w-96 h-96 bg-primary-light/10 rounded-full blur-3xl"
-        animate={{ 
+        animate={{
           x: [0, -20, 0],
           y: [0, 30, 0],
           scale: [1, 1.15, 1]
@@ -90,39 +119,30 @@ const Hero = () => {
       />
 
       {/* Content */}
-      <motion.div 
-        className="relative z-10 container mx-auto px-4 text-center text-white"
+      <motion.div
+        className="relative z-10 container mx-auto px-4 sm:px-5 text-center text-white max-w-5xl"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        {/* Badge */}
-        <motion.div 
+        <motion.h1
           variants={itemVariants}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-8"
-        >
-          <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-          <span className="text-sm font-medium">Servicio en vivo · Domingos 10:00 AM</span>
-        </motion.div>
-
-        <motion.h1 
-          variants={itemVariants}
-          className="text-4xl md:text-6xl lg:text-7xl font-semibold tracking-tight mb-5 drop-shadow-2xl"
+          className="text-4xl md:text-5xl lg:text-[3.5rem] font-semibold tracking-tight mb-2 drop-shadow-2xl leading-tight"
         >
           Iglesia Bíblica{' '}
           <span className="text-secondary">REFLEJO</span>
         </motion.h1>
-        
-        <motion.p 
+
+        <motion.p
           variants={itemVariants}
-          className="text-lg md:text-2xl lg:text-[2rem] font-extralight max-w-3xl mx-auto opacity-90 leading-snug mb-9"
+          className="text-base md:text-lg lg:text-xl font-extralight max-w-3xl mx-auto opacity-90 leading-snug mb-4"
         >
           ¡Que el mundo vea a <span className="font-semibold text-secondary">Jesús</span> a través de nosotros!
         </motion.p>
 
-        <motion.div 
+        <motion.div
           variants={itemVariants}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          className="flex flex-col sm:flex-row items-center justify-center gap-2.5"
         >
           <motion.div variants={buttonVariants} whileHover="hover" whileTap="tap">
             <Button
@@ -134,43 +154,43 @@ const Hero = () => {
               endIcon={<ChevronRight className="group-hover:translate-x-1 transition-transform" />}
               className="btn-shine"
               sx={{
-                backgroundColor: 'rgba(245, 158, 11, 0.85)',
-                fontSize: '1.1rem',
-                py: 1.75,
-                px: 5,
+                backgroundColor: 'rgba(245, 158, 11, 0.9)',
+                fontSize: '1rem',
+                py: 1.35,
+                px: 4,
                 borderRadius: '9999px',
                 textTransform: 'none',
                 fontWeight: 600,
-                boxShadow: '0 10px 40px -10px rgba(245, 158, 11, 0.5)',
-                '&:hover': { 
+                boxShadow: '0 8px 30px -12px rgba(245, 158, 11, 0.55)',
+                '&:hover': {
                   backgroundColor: '#d97706',
-                  boxShadow: '0 15px 50px -10px rgba(245, 158, 11, 0.6)'
+                  boxShadow: '0 12px 34px -12px rgba(245, 158, 11, 0.6)'
                 }
               }}
             >
               Visítanos este Domingo
             </Button>
           </motion.div>
-          
+
           <motion.div variants={buttonVariants} whileHover="hover" whileTap="tap">
             <Button
               component={Link}
-              to="/nosotros"
+              to="/?tab=0"
               variant="outlined"
               size="large"
               sx={{
                 color: 'white',
-                borderColor: 'rgba(255,255,255,0.4)',
-                borderWidth: 2,
-                fontSize: '1.1rem',
-                py: 1.6,
-                px: 5,
+                borderColor: 'rgba(255,255,255,0.35)',
+                borderWidth: 1.5,
+                fontSize: '1rem',
+                py: 1.25,
+                px: 4,
                 borderRadius: '9999px',
                 textTransform: 'none',
                 fontWeight: 600,
                 backdropFilter: 'blur(10px)',
                 backgroundColor: 'rgba(255,255,255,0.08)',
-                '&:hover': { 
+                '&:hover': {
                   borderColor: '#fbbf24',
                   color: '#fbbf24',
                   backgroundColor: 'rgba(255,255,255,0.1)',
@@ -184,41 +204,24 @@ const Hero = () => {
         </motion.div>
 
         {/* Stats row */}
-        <motion.div 
+        <motion.div
           variants={itemVariants}
-          className="flex flex-wrap justify-center gap-4 md:gap-6 mt-12"
+          className="flex flex-wrap justify-center gap-2.5 md:gap-3 mt-6"
         >
           {[
-            { value: '500+', label: 'Miembros' },
+            { value: '250+', label: 'Miembros' },
             { value: '2', label: 'Sedes' },
-            { value: '15+', label: 'Años' }
+            { value: `${uptime.months}m ${uptime.days}d ${uptime.hours}h`, label: 'Desde 25 Dic 2025' }
           ].map((stat, idx) => (
-            <div key={idx} className="text-center px-5 py-3 rounded-xl bg-white/15 backdrop-blur-md border border-white/20">
-              <div className="text-xs text-secondary">•</div>
-              <div className="text-2xl md:text-3xl font-semibold text-secondary">{stat.value}</div>
-              <div className="text-xs tracking-wide text-white/80">{stat.label}</div>
+            <div key={idx} className="text-center px-3.5 py-2 rounded-xl bg-white/15 backdrop-blur-md border border-white/15">
+              <div className="text-[11px] text-secondary">•</div>
+              <div className="text-xl md:text-2xl font-semibold text-secondary leading-tight">{stat.value}</div>
+              <div className="text-[11px] tracking-wide text-white/80">{stat.label}</div>
             </div>
           ))}
         </motion.div>
       </motion.div>
 
-      {/* Scroll indicator */}
-      <motion.div 
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 2, duration: 0.5 }}
-        onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
-      >
-        <motion.div 
-          className="flex flex-col items-center gap-2 text-white/70 hover:text-white transition-colors"
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          <span className="text-xs uppercase tracking-widest font-medium">Descubre más</span>
-          <ChevronDown size={24} />
-        </motion.div>
-      </motion.div>
     </section>
   );
 };

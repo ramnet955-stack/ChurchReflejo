@@ -9,7 +9,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 // Lazy loading de páginas
 const Home = React.lazy(() => import('./pages/Home'));
-const AboutPage = React.lazy(() => import('./pages/AboutPage'));
+
 const DiscipleshipPage = React.lazy(() => import('./pages/DiscipleshipPage'));
 const MinistriesPage = React.lazy(() => import('./pages/MinistriesPage'));
 const EventsPage = React.lazy(() => import('./pages/EventsPage'));
@@ -23,7 +23,7 @@ const Terms = React.lazy(() => import('./pages/Terms'));
 
 // Componente de carga mejorado
 const LoadingSpinner = () => (
-  <motion.div 
+  <motion.div
     className="min-h-screen flex items-center justify-center bg-gray-50"
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
@@ -56,7 +56,7 @@ const LoadingSpinner = () => (
           />
         ))}
       </div>
-      <motion.p 
+      <motion.p
         className="mt-4 text-gray-500 font-medium"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -71,11 +71,11 @@ const LoadingSpinner = () => (
 // Componente para rastrear rutas y hacer scroll al inicio
 const ScrollToTop = () => {
   const location = useLocation();
-  
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [location.pathname]);
-  
+
   return null;
 };
 
@@ -191,7 +191,7 @@ function App() {
           <CssBaseline />
           <HashRouter>
             <ScrollToTop />
-            <Toaster 
+            <Toaster
               position="top-right"
               toastOptions={{
                 duration: 4000,
@@ -212,20 +212,20 @@ function App() {
             <Suspense fallback={<LoadingSpinner />}>
               <AnimatePresence mode="wait">
                 <div className="min-h-screen bg-gray-50 text-gray-800 dark:bg-slate-950 dark:text-slate-100 font-sans selection:bg-amber-200">
-                   <Routes>
-                      <Route path="/" element={<Home />} />
-                      <Route path="/nosotros" element={<AboutPage />} />
-                      <Route path="/discipulado" element={<DiscipleshipPage />} />
-                      <Route path="/ministerios" element={<MinistriesPage />} />
-                      <Route path="/eventos" element={<EventsPage />} />
-                      <Route path="/ubicacion" element={<LocationPage />} />
-                      <Route path="/login" element={<Login />} />
-                      <Route path="/donar" element={<Donate />} />
-                      <Route path="/discipulado/:id" element={<DiscipleshipDetail />} />
-                      <Route path="/ministerios/:id" element={<MinistryDetail />} />
-                      <Route path="/privacidad" element={<Privacy />} />
-                      <Route path="/terminos" element={<Terms />} />
-                   </Routes>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    {/* <Route path="/nosotros" element={<AboutPage />} /> */}
+                    <Route path="/discipulado" element={<DiscipleshipPage />} />
+                    <Route path="/ministerios" element={<MinistriesPage />} />
+                    <Route path="/eventos" element={<EventsPage />} />
+                    <Route path="/ubicacion" element={<LocationPage />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/donar" element={<Donate />} />
+                    <Route path="/discipulado/:id" element={<DiscipleshipDetail />} />
+                    <Route path="/ministerios/:id" element={<MinistryDetail />} />
+                    <Route path="/privacidad" element={<Privacy />} />
+                    <Route path="/terminos" element={<Terms />} />
+                  </Routes>
                 </div>
               </AnimatePresence>
             </Suspense>

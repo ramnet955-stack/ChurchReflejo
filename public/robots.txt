@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ramnet955-stack.github.io/ChurchReflejo/sitemap.xml
