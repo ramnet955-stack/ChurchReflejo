@@ -68,21 +68,7 @@ const Location = () => {
                               <p className="text-gray-600 text-sm">05:00 PM - Reunión General</p>
                            </div>
                         </div>
-                        <div className="flex items-start gap-3">
-                           <Users size={18} className="text-secondary mt-0.5" />
-                           <div className="space-y-1">
-                              <div>
-                                 <p className="font-bold text-gray-800 text-sm">Miércoles</p>
-                                 <p className="text-gray-600 text-xs">07:00 PM - Gen R (Vía Zoom)</p>
-                              </div>
-                              <div>
-                                 <p className="font-bold text-gray-800 text-sm">Viernes</p>
-                                 <p className="text-gray-600 text-xs"><span className="font-semibold">1er Viernes:</span> Oración 07:00 PM</p>
-                                 <p className="text-gray-600 text-xs"><span className="font-semibold">Resto:</span> Mujeres 07:00 PM</p>
-                                 <p className="text-gray-600 text-xs pl-8">Discipulado 08:00 PM</p>
-                              </div>
-                           </div>
-                        </div>
+
                      </div>
 
                      <button className="mt-6 w-full py-2 border border-primary text-primary rounded-lg text-sm font-bold hover:bg-primary hover:text-white transition-colors">
